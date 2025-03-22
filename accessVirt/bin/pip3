@@ -1,4 +1,4 @@
-#!/home/student/Desktop/Group4/django-app/accessVirt/bin/python3
+#!/home/student/Desktop/Group4/accessVirt/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
