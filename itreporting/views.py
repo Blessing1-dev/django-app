@@ -6,10 +6,10 @@ from django.shortcuts import render
 
 #define a function for the home view
 def home(request):
-    return render(request, 'itreporting/home.html')
+    return render(request, 'itreporting/home.html', {'title': 'Welcome'})
 
 def about(request):
-    return render(request, 'itreporting/about.html')
+    return render(request, 'itreporting/about.html', {'title': 'About'})
 
 def contact(request):
-    return render(request, 'itreporting/contact.html')
+    return render(request, 'itreporting/contact.html', {'title': 'Contact'})
