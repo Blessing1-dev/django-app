@@ -19,5 +19,5 @@ from django.urls import path, include   #This will Import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),   #Admin URL
-    path('itreporting/', include('itreporting.urls')),   #This connects my app URLs
+    path('', include('itreporting.urls')),   #This connects my app URLs
 ]

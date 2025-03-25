@@ -5,11 +5,11 @@ from . import views
 
 #we define the namespace of the app, so the URL can be easily recognised and traced back to the application it 
 #is sourced from
-app_name = 'itreporting'
+app_name = "itreporting"
 
 #we create a route or a url for the homepage and map the function to the route
 urlpatterns = [ 
-    path('', views.home, name = 'home'),    #The home view path. The empty string '' makes this the default route
+    path('', views.home, name='home'),    #The home view path. The empty string '' makes this the default route
     path('about/', views.about, name='about'),  #The about us page
-    path('contact', views.contact, name='contact'),  #The contact us page
+    path('contact/', views.contact, name='contact'),  #The contact us page
 ]
