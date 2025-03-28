@@ -1,9 +1,62 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>BLESSING OMOKARO UNIVERSITY - ABOUT US</title>
-</head>
-<body>
-    <h1>Get to know more about Blessing Omokaro University</h1>
-</body>
-</html>
+{% extends "itreporting/base.html" %}
+
+{% block content %}
+<!-- Internal Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">About Us</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="#history">History</a></li>
+                <li class="nav-item"><a class="nav-link" href="#mission">Mission & Vision</a></li>
+                <li class="nav-item"><a class="nav-link" href="#facilities">Facilities</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<header class="bg-primary text-white text-center py-5">
+    <div class="container">
+        <h1>Welcome to BLESSING OMOKARO UNIVERSITY</h1>
+        <p>Excellence in education and innovation</p>
+    </div>
+</header>
+
+<!-- History Section -->
+<section id="history" class="container my-5">
+    <h2 class="text-center">Our History</h2>
+    <p class="text-center">Founded in 1978, BLESSING OMOKARO UNIVERSITY has been a beacon of learning and development...</p>
+</section>
+
+<!-- Mission & Vision Section -->
+<section id="mission" class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center">Mission & Vision</h2>
+        <p>Our mission is to provide world-class education, fostering innovation and leadership...</p>
+    </div>
+</section>
+
+<!-- Facilities Section -->
+<section id="facilities" class="container my-5">
+    <h2 class="text-center">Our Facilities</h2>
+    <ul>
+        <li>State-of-the-art libraries</li>
+        <li>Modern laboratories</li>
+        <li>Student recreational centers</li>
+    </ul>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="bg-dark text-white py-5">
+    <div class="container text-center">
+        <h2>Contact Us</h2>
+        <p>Email: contact@blessingomokarouniversity.edu | Phone: +447881155367</p>
+    </div>
+</section>
+
+{% endblock %}

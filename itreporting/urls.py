@@ -12,4 +12,5 @@ urlpatterns = [
     path('', views.home, name='home'),    #The home view path. The empty string '' makes this the default route
     path('about/', views.about, name='about'),  #The about us page
     path('contact/', views.contact, name='contact'),  #The contact us page
+    path('module/', views.course, name='module'),
 ]
