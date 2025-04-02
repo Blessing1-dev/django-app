@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="{% url 'itreporting:contact' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
     
-    <title>BLESSING OMOKARO UNIVERSITY - {{title}}</title>
+    <title>SHEFFIELD HALLAM UNIVERSITY - {{title}}</title>
 </head>
 
 <body>
@@ -31,7 +31,7 @@
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" href="{% url 'itreporting:home' %}">Home</a>
                         <a class="nav-item nav-link" href="{% url 'itreporting:about' %}">About</a>
-                        <a class="nav-item nav-link" href="#">Report</a>
+                        <a class="nav-item nav-link" href="{% url 'itreporting:report' %}">Report</a>
                         <a class="nav-item nav-link" href="{% url 'itreporting:contact' %}">Contact</a>
                         <a class="nav-item nav-link" href="{% url 'itreporting:module' %}">Module</a>
                     </div>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 </div>
-            </nav>
+            </nav> 
         </header>
         <div class="row">
             <div class="col-md-8">

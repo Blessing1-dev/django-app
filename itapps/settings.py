@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -121,7 +122,17 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
+MEDIA_URL = ''  #It ought to be like this MEDIA_URL = '/media/' but this will result a duplicate media/ path for our Image folder already named media>profile_pics
+
+# Directory where static files will be collected during deployment
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Additional locations for static files (do NOT include STATIC_ROOT here)
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    "/home/student/Desktop/Group4/django-app/static",
+    os.path.join(BASE_DIR, 'static'),  # Local static files directory
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

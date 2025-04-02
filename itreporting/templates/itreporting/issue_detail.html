@@ -1,0 +1,16 @@
+{% extends "itreporting/base.html" %}
+
+{% block content %}
+    <h1>IT Issues Reported</h1>
+
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="#">{{ object.author.profile }}</a>
+                    <small class="text-muted">{{ object.date_submitted }}</small>
+                </div>
+                <h2 class="article-title">{{ object.type    }} Issue in Room {{object.room}}</h2>
+                <p class="article-content">{{ object.details }}</p>
+            </div>
+        </article>
+{% endblock %}
