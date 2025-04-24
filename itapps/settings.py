@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'crispy_forms',
     'crispy_bootstrap4',
+    'rest_framework',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -122,7 +124,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = ''  #It ought to be like this MEDIA_URL = '/media/' but this will result a duplicate media/ path for our Image folder already named media>profile_pics
+MEDIA_URL = '/media/'  
 
 # Directory where static files will be collected during deployment
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

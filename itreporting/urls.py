@@ -1,9 +1,6 @@
 #we have to import path, else line 12 will throw a problem saying "path" is not defined
 from django.urls import path #, include
-from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView
-
-
-
+from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, UserPostListView
 
 #we add invoke the home function from views.py
 from . import views
@@ -24,4 +21,5 @@ urlpatterns = [
     path('issue/new', PostCreateView.as_view(), name = 'issue-create'),
     path('issue/<int:pk>/update/', PostUpdateView.as_view(), name = 'issue-update'),
     path('issue/<int:pk>/delete/', PostDeleteView.as_view(), name = 'issue-delete'),
+    path('issue/<str:username>', UserPostListView.as_view(), name = 'user-issues'),
 ]
