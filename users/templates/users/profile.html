@@ -14,9 +14,17 @@
 
       <h2 class="account-heading">{{user.profile}}</h2> 
 
-      <p class="text-secondary">{{user.username}}</p> 
+      <p class="text-secondary">Username: {{user.username}}</p> 
 
-      <p class="text-secondary">{{user.email}}</p> 
+      <p class="text-secondary">Email: {{user.email}}</p> 
+
+      <p class="text-secondary">Date of Birth: {{ user.profile.date_of_birth }}</p>
+
+      <p class="text-secondary">Address: {{ user.profile.address }}</p>
+
+      <p class="text-secondary">City/Town: {{ user.profile.city }}</p>
+
+      <p class="text-secondary">Country: {{ user.profile.country }}</p>
 
     </div> 
 

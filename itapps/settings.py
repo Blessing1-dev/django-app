@@ -38,11 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #my apps
     'itreporting.apps.ItreportingConfig',
     'users.apps.UsersConfig',
+    #Crispy Forms:
     'crispy_forms',
     'crispy_bootstrap4',
+    #Django REST Framework
     'rest_framework',
+    'rest_framework.authtoken',
+    #My api app
     'api',
 ]
 
@@ -76,6 +81,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'itapps.wsgi.application'
 
+#default configuration for the REST API authentication
+REST_FRAMEWORK = { 
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [ 
+
+        'rest_framework.authentication.TokenAuthentication', 
+
+    ], 
+
+} 
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -144,3 +159,16 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'itreporting:home'
 LOGIN_URL = 'login' 
+
+# Email backend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' 
+EMAIL_FILE_PATH = BASE_DIR / 'emails' 
+
+# SMTP server details
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Your Gmail login
+EMAIL_HOST_USER = 'blessingomokaro16@gmail.com'
+EMAIL_HOST_PASSWORD = 'eyjbgsxesfbbwwpf'
