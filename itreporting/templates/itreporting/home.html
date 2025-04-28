@@ -15,6 +15,7 @@
 <section class="container my-5">
     <h2 class="text-center">Available Courses</h2>
     <div class="row">
+        
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
@@ -47,3 +48,26 @@
     <p>&copy; 2025 SHEFFIELD HALLAM UNIVERSITY. All rights reserved.</p>
 </footer>
 {% endblock content %}
+
+{% block sidebar %} 
+<div class="col-md-4"> 
+
+        <h3>Current Weathers</h3> 
+
+        <p class='text-muted'>Cities across United Kingdom 
+
+            <ul class="list-group"> 
+
+                    {% for weather in weather_data %} 
+
+                        <li class="list-group-item list-group-item-light">{{ weather.city }}: {{ weather.description }}, {{ weather.temperature }}&deg;C</li> 
+
+{% endfor %} 
+
+            </ul> 
+
+        </p> 
+
+</div> 
+
+{% endblock sidebar %}  

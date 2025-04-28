@@ -21,6 +21,10 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'email']
 
 class ProfileUpdateForm(forms.ModelForm):
+    date_of_birth = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date'})  # this makes it a browser date picker!
+    )
     class Meta:
         model = Profile
-        fields = ['image']
+        fields = ['image', 'date_of_birth', 'address', 'city', 'country']
