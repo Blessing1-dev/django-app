@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from .models import Issue
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin 
@@ -9,9 +8,13 @@ from django.contrib.auth.models import User
 from .forms import ContactForm
 from django.contrib import messages
 #from .models import Issues
-
+#from django.core.mail import send_mail
+#from django.contrib import messages
+#from .forms import ContactForm
 
 # Create your views here.
+from .models import Issue, Module
+from .forms import ModuleForm
 #This code will import the object HttpResponse which will use to render the views
 #from django.http import HttpResponse           #As templates now manage responses, you can remove the from django.http import HttpResponse line in views.py.
 
@@ -41,8 +44,25 @@ def home(request):
 def about(request):
     return render(request, 'itreporting/about.html', {'title': 'About'})
 
-def module(request):
-    return render(request, 'itreporting/module.html', {'title': 'Module'})
+def contact(request):
+    return render(request, 'itreporting/contact.html', {'title': 'Contact'})
+
+#def module(request):
+ #   return render(request, 'itreporting/module.html', {'title': 'Module'})
+
+def module_list(request):
+    modules = Module.objects.all()
+
+    if request.method == 'POST':
+        form = ModuleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('itreporting:module_list')
+    else:
+        form = ModuleForm()
+
+    return render(request, 'modules/module_list.html', {'modules': modules, 'form': form})
+
 
 def report(request):
    
@@ -100,27 +120,32 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         issue = self.get_object()
         return self.request.user == issue.author
+    
+def contact(request):
+    return render(request, 'itreporting/contact.html', {'title': 'Contact'})
         
-class ContactFormView(FormView): 
+    #if request.method == 'POST':
+        #form = ContactForm(request.POST)
+        #if form.is_valid():
+         #   name = form.cleaned_data['name']
+          #  email = form.cleaned_data['email']
+           # subject = form.cleaned_data['subject']
+            #message = form.cleaned_data['message']
 
-    form_class = ContactForm 
-    template_name = 'itreporting/contact.html' 
+            # Send email (adjust settings as needed)
+            #send_mail(
+             #   f'Enquiry from {name}: {subject}',
+              #  message,
+               # email,
+                #['admin@blessingomokarouniversity.edu'],    
+                #fail_silently=False,
+            #)
 
-    def get_context_data(self, **kwargs): 
+            #messages.success(request, "Your enquiry has been sent successfully!")
+            #return render(request, 'itreporting/contact.html', {'form': ContactForm()})
+    #else:
+     #   form = ContactForm()
+    
+    #return render(request, 'itreporting/contact.html', {'form': form})
 
-        context = super(ContactFormView, self).get_context_data(**kwargs) 
-        context.update({'title': 'Contact Us'}) 
-        return context 
-
-    def form_valid(self, form): 
-        form.send_mail() 
-        messages.success(self.request, 'Successfully sent the enquiry') 
-        return super().form_valid(form) 
-
-    def form_invalid(self, form): 
-        messages.warning(self.request, 'Unable to send the enquiry') 
-        return super().form_invalid(form)  
-
-    def get_success_url(self): 
-        return self.request.path 
     
