@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from .models import Issue
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin 
@@ -8,9 +7,10 @@ from django.views.generic.edit import DeleteView
 #from .models import Issues
 #from django.core.mail import send_mail
 #from django.contrib import messages
-#from .forms import ContactForm
 
 # Create your views here.
+from .models import Issue, Module
+from .forms import ModuleForm
 #This code will import the object HttpResponse which will use to render the views
 #from django.http import HttpResponse           #As templates now manage responses, you can remove the from django.http import HttpResponse line in views.py.
 
@@ -21,8 +21,25 @@ def home(request):
 def about(request):
     return render(request, 'itreporting/about.html', {'title': 'About'})
 
-def module(request):
-    return render(request, 'itreporting/module.html', {'title': 'Module'})
+def contact(request):
+    return render(request, 'itreporting/contact.html', {'title': 'Contact'})
+
+#def module(request):
+ #   return render(request, 'itreporting/module.html', {'title': 'Module'})
+
+def module_list(request):
+    modules = Module.objects.all()
+
+    if request.method == 'POST':
+        form = ModuleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('itreporting:module_list')
+    else:
+        form = ModuleForm()
+
+    return render(request, 'modules/module_list.html', {'modules': modules, 'form': form})
+
 
 def report(request):
    
@@ -68,8 +85,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         issue = self.get_object()
         return self.request.user == issue.author
     
-def contact(request):
-    return render(request, 'itreporting/contact.html', {'title': 'Contact'})
+
         
     #if request.method == 'POST':
         #form = ContactForm(request.POST)
