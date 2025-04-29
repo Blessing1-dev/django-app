@@ -19,7 +19,6 @@ class Issue(models.Model):
     def get_absolute_url(self):
         return reverse('itreporting:issue-detail', kwargs = {'pk': self.pk})
 
-<<<<<<< HEAD
 class Module(models.Model):
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=10, unique=True)
@@ -27,6 +26,3 @@ class Module(models.Model):
 
     def __str__(self):
         return f"{self.code} - {self.name}"
-=======
-  
->>>>>>> origin/main
