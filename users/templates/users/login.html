@@ -20,7 +20,8 @@
 
         <div class="form-group"> 
 
-            <button class="btn btn-outline-info" type="submit">Login</button> 
+            <button class="btn btn-outline-info" type="submit">Login</button> <br><br>
+            <a href="{% url 'password_reset' %}">Forgot password?</a>
 
         </div> 
 
@@ -30,7 +31,7 @@
 
         <small class="text-muted"> 
 
-        You need to create an account?<a class="ml-2" href="{% url 'register' %}">Register</a> 
+        Create an account?<a class="ml-2" href="{% url 'register' %}">Register</a> 
 
         </small> 
 

@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 
 from .models import Issue, Module
 from .forms import ContactForm, ModuleForm
-#from django.contrib import messages
+from django.contrib import messages
+from decouple import config
 
 
 # Create your views here. 
@@ -19,7 +20,7 @@ def home(request):
     url = 'https://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&appid={}'
     cities = [('Sheffield', 'UK'), ('Melaka', 'Malaysia'), ('Bandung', 'Indonesia')]
     weather_data = []
-    api_key = '34060a09a2058dfd8f632cbe4584fef1'
+    api_key = config('API_KEY')
 
     for city in cities:
         city_weather = requests.get(url.format(city[0], city[1], api_key)).json() # Request the API data and convert the JSON to Python data types
@@ -59,15 +60,6 @@ def report(request):
    
     daily_report = {'issues': Issue.objects.all(), 'title': 'Issues Reported'}
     return render(request, 'itreporting/report.html', daily_report)
-
-class ContactFormView(FormView):
-    template_name = 'itreporting/contact.html'
-    form_class = ContactForm
-    success_url = '/'
-
-    def form_valid(self, form):
-        form.send_mail()
-        return super().form_valid(form)
     
 class PostListView(ListView):
     model = Issue
@@ -120,9 +112,25 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         issue = self.get_object()
         return self.request.user == issue.author
-    
-def contact(request):
-    return render(request, 'itreporting/contact.html', {'title': 'Contact'})
 
+class ContactFormView(FormView):
+    template_name = 'itreporting/contact.html'
+    form_class = ContactForm
+    success_url = '/'
 
+    def get_context_data(self, **kwargs): 
+        context = super(ContactFormView, self).get_context_data(**kwargs) 
+        context.update({'title': 'Contact Us'}) 
+        return context
     
+    def form_valid(self, form):
+        form.send_mail()
+        messages.success(self.request, 'Your message was sent successfully!')
+        return super().form_valid(form)
+    
+    def form_invalid(self, form): 
+        messages.warning(self.request, 'Unable to send the enquiry') 
+        return super().form_invalid(form)
+    
+    def get_success_url(self): 
+        return self.request.path
