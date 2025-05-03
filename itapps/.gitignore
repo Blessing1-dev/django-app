@@ -1,6 +1,0 @@
-accessVirt/
-*.pyc
-.env
-#These simple instructions above tells Git to ignore the virtual environment directory and all *.pyc files, 
-#ensuring a clean and efficient repository.
-

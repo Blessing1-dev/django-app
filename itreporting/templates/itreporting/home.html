@@ -1,15 +1,60 @@
 {% extends "itreporting/base.html" %}
 
 {% block content %}
-
 <header class="bg-primary text-white text-center py-5">
     <div class="container">
-        <h1 class="display-4 fw-bold">Welcome to Sheffield Hallam University</h1>
-        <p class="lead">Empowering Future Leaders Through Excellence in Education</p>
-        <a href="#courses" class="btn btn-light btn-lg mt-3">Explore Our Courses</a>
+        <a class="navbar-brand" href="#">Student IT Services</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:module_list' %}">Module</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:about' %}">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:contact' %}">Contact</a></li>
+            </ul>
+        </div>
     </div>
+
+<section id="intro" class="py-5 bg-light">
+    <div class="container">
+        <h1>Welcome to SHEFFIELD HALLAM UNIVERSITY</h1>
+        <p>Your gateway to quality education.</p>
+        <a href="#" class="btn btn-primary">Get Started</a>
+    </div>
+</section>
 </header>
 
+<section id="courses" class="container my-5">
+    <h2 class="text-center">Available Courses</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Computer Science</h5>
+                    <p class="card-text">Learn programming, AI, and web development.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Business Administration</h5>
+                    <p class="card-text">Learn management, entrepreneurship, and leadership skills.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Mechanical Engineering</h5>
+                    <p class="card-text">Explore engineering principles and technologies.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <section class="py-5">
     <div class="container text-center">
@@ -31,7 +76,7 @@
                 <p>Join a vibrant international student body from over 100 countries.</p>
             </div>
         </div>
-    </div>
+    </div>        
 </section>
 
 
@@ -116,6 +161,25 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block sidebar %}
+<!-- Sidebar Section: Weather Information -->
+<div class="col-md-4">
+    <h3>Current Weather</h3>
+    <p class='text-muted'>Cities across the United Kingdom</p>
+    <ul class="list-group">
+        {% for weather in weather_data %}
+            <li class="list-group-item list-group-item-light">
+                <strong>{{ weather.city }}:</strong> {{ weather.description }}, {{ weather.temperature }}&deg;C
+            </li>
+        {% empty %}
+            <li class="list-group-item">No weather data available.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock sidebar %}
+
 
 <footer class="bg-dark text-white text-center py-4">
     <div class="container">
@@ -127,4 +191,3 @@
         </div>
     </div>
 </footer>
-{% endblock %}

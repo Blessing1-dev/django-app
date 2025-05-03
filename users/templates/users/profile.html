@@ -1,5 +1,6 @@
 {% extends "itreporting/base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block content %}
 
@@ -7,15 +8,23 @@
 
   <div class="media"> 
 
-   <p><img class="rounded-circle account-img" src="{{user.profile.image.url}}"></p> 
+   <p><img class="rounded-circle account-img" src="{{ user.profile.image.url }}"></p> 
 
     <div class="media-body"> 
 
       <h2 class="account-heading">{{user.profile}}</h2> 
 
-      <p class="text-secondary">{{user.username}}</p> 
+      <p class="text-secondary">Username: {{user.username}}</p> 
 
-      <p class="text-secondary">{{user.email}}</p> 
+      <p class="text-secondary">Email: {{user.email}}</p> 
+
+      <p class="text-secondary">Date of Birth: {{ user.profile.date_of_birth }}</p>
+
+      <p class="text-secondary">Address: {{ user.profile.address }}</p>
+
+      <p class="text-secondary">City/Town: {{ user.profile.city }}</p>
+
+      <p class="text-secondary">Country: {{ user.profile.country }}</p>
 
     </div> 
 

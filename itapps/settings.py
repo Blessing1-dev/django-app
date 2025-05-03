@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+o(*2pvj+r6ehy9_!62!9qf1x#qq96%5!7jug0o7+n_wo&wz#w'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['localhost','127.0.0.0', '127.0.0.1']
 
@@ -38,10 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #my apps
     'itreporting.apps.ItreportingConfig',
     'users.apps.UsersConfig',
+    #Crispy Forms:
     'crispy_forms',
     'crispy_bootstrap4',
+    #Django REST Framework
+    'rest_framework',
+    'rest_framework.authtoken',
+    #My api app
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -74,13 +82,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'itapps.wsgi.application'
 
+#default configuration for the REST API authentication
+REST_FRAMEWORK = { 
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [ 
+
+        'rest_framework.authentication.TokenAuthentication', 
+
+    ], 
+
+} 
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
@@ -122,7 +140,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = ''  #It ought to be like this MEDIA_URL = '/media/' but this will result a duplicate media/ path for our Image folder already named media>profile_pics
+MEDIA_URL = '/media/'  
 
 # Directory where static files will be collected during deployment
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -142,3 +160,10 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'itreporting:home'
 LOGIN_URL = 'login' 
+
+# Email backend
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend' 
+EMAIL_FILE_PATH = BASE_DIR / 'emails' 
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'
+
+
