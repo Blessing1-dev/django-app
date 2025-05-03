@@ -1,66 +1,130 @@
 {% extends "itreporting/base.html" %}
 
 {% block content %}
-   <!-- Navigation Section 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="#">Student IT Services</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:home' %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:module' %}">Module</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:about' %}">About Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:contact' %}">Contact</a></li>
-            </ul>
-        </div>
-    </div>
-</nav> -->
 
-<!-- Hero Section -->
-<header class="bg-light text-center py-5">
+<header class="bg-primary text-white text-center py-5">
     <div class="container">
-        <h1>Welcome to SHEFFIELD HALLAM UNIVERSITY</h1>
-        <p>Your gateway to quality education.</p>
-        <a href="#" class="btn btn-primary">Get Started</a>
+        <h1 class="display-4 fw-bold">Welcome to Sheffield Hallam University</h1>
+        <p class="lead">Empowering Future Leaders Through Excellence in Education</p>
+        <a href="#courses" class="btn btn-light btn-lg mt-3">Explore Our Courses</a>
     </div>
 </header>
 
-<!-- Courses Section -->
-<section class="container my-5">
-    <h2 class="text-center">Available Courses</h2>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Computer Science</h5>
-                    <p class="card-text">Learn programming, AI, and web development.</p>
-                </div>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Why Choose Sheffield Hallam?</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <i class="bi bi-mortarboard-fill display-4 text-primary"></i>
+                <h5 class="mt-3">Top-Ranked Programs</h5>
+                <p>Internationally recognized degrees across a wide range of disciplines.</p>
+            </div>
+            <div class="col-md-4">
+                <i class="bi bi-building display-4 text-primary"></i>
+                <h5 class="mt-3">State-of-the-Art Facilities</h5>
+                <p>Access modern labs, studios, and collaborative workspaces.</p>
+            </div>
+            <div class="col-md-4">
+                <i class="bi bi-globe-americas display-4 text-primary"></i>
+                <h5 class="mt-3">Global Community</h5>
+                <p>Join a vibrant international student body from over 100 countries.</p>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Business Administration</h5>
-                    <p class="card-text">Develop skills in management and leadership.</p>
+    </div>
+</section>
+
+
+<section id="courses" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Courses</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow border-0">
+                    <img src="https://via.placeholder.com/600x300?text=Computer+Science" class="card-img-top" alt="Computer Science">
+                    <div class="card-body">
+                        <h5 class="card-title">Computer Science</h5>
+                        <p>Advance your knowledge in programming, data science, and AI through innovative learning.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Engineering</h5>
-                    <p class="card-text">Explore mechanical, electrical, and civil engineering.</p>
+            <div class="col-md-4">
+                <div class="card h-100 shadow border-0">
+                    <img src="https://via.placeholder.com/600x300?text=Business+Administration" class="card-img-top" alt="Business">
+                    <div class="card-body">
+                        <h5 class="card-title">Business Administration</h5>
+                        <p>Master leadership, entrepreneurship, and corporate strategy with real-world case studies.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow border-0">
+                    <img src="https://via.placeholder.com/600x300?text=Engineering" class="card-img-top" alt="Engineering">
+                    <div class="card-body">
+                        <h5 class="card-title">Engineering</h5>
+                        <p>Explore the future of design and manufacturing in our cutting-edge labs and workshops.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Footer Section -->
-<footer class="bg-dark text-white text-center py-3">
-    <p>&copy; 2025 SHEFFIELD HALLAM UNIVERSITY. All rights reserved.</p>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Vibrant Student Life</h2>
+        <p class="mb-4">At Sheffield Hallam, learning goes beyond the classroom. Discover clubs, sports, volunteer opportunities, and more.</p>
+        <img src="https://via.placeholder.com/1000x400?text=Campus+Life" class="img-fluid rounded" alt="Student Life">
+    </div>
+</section>
+
+
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">What Our Students Say</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <blockquote class="blockquote">
+                    <p>"Sheffield Hallam has given me the confidence and skills to thrive in the tech industry."</p>
+                    <footer class="blockquote-footer">Amara, BSc Computer Science</footer>
+                </blockquote>
+            </div>
+            <div class="col-md-6">
+                <blockquote class="blockquote">
+                    <p>"The support from faculty and the hands-on experiences truly made a difference in my career."</p>
+                    <footer class="blockquote-footer">James, MBA Graduate</footer>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="bg-primary text-white py-5">
+    <div class="container text-center">
+        <h2>Stay Updated</h2>
+        <p>Subscribe to our newsletter for the latest events, programs, and news.</p>
+        <form class="row g-2 justify-content-center mt-3">
+            <div class="col-md-4">
+                <input type="email" class="form-control" placeholder="Enter your email">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-light w-100" type="submit">Subscribe</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+<footer class="bg-dark text-white text-center py-4">
+    <div class="container">
+        <p>&copy; 2025 Sheffield Hallam University. All rights reserved.</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="#" class="text-white text-decoration-none">Privacy Policy</a>
+            <a href="#" class="text-white text-decoration-none">Terms</a>
+            <a href="#" class="text-white text-decoration-none">Support</a>
+        </div>
+    </div>
 </footer>
-{% endblock content %}
+{% endblock %}

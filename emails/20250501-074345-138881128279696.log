@@ -1,0 +1,26 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Password reset on localhost:8000
+From: webmaster@localhost
+To: Blessing.E.Omokaro@student.shu.ac.uk
+Date: Thu, 01 May 2025 07:43:45 -0000
+Message-ID: 
+ <174608542563.28817.14634630159340475155@lab000001.internal.cloudapp.net>
+
+
+You're receiving this email because you requested a password reset for your user account at localhost:8000.
+
+Please go to the following page and choose a new password:
+
+http://localhost:8000/accounts/reset/NQ/cp45gx-1a543073946d29e0dbd22246b9abc4e9/
+
+Your username, in case you’ve forgotten: Omokaro
+
+Thanks for using our site!
+
+The localhost:8000 team
+
+
+
+-------------------------------------------------------------------------------
