@@ -7,8 +7,7 @@ from django.contrib.auth.models import User
 from .models import Issue, Module
 from .forms import ContactForm, ModuleForm
 from django.contrib import messages
-from decouple import config
-
+from decouple import config, UndefinedValueError
 
 # Create your views here. 
 #This code will import the object HttpResponse which will use to render the views
@@ -18,9 +17,12 @@ from decouple import config
 def home(request):
     import requests
     url = 'https://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&appid={}'
-    cities = [('Sheffield', 'UK'), ('Melaka', 'Malaysia'), ('Bandung', 'Indonesia')]
+    cities = [('Sheffield', 'UK'), ('Derby', 'UK'), ('London', 'UK'), ('Valencia', 'Spain'), ('Melaka', 'Malaysia'), ('Bandung', 'Indonesia')]
     weather_data = []
-    api_key = config('API_KEY')
+    try:
+        api_key = config('OPENWEATHER_API_KEY')
+    except UndefinedValueError:
+        api_key = None 
 
     for city in cities:
         city_weather = requests.get(url.format(city[0], city[1], api_key)).json() # Request the API data and convert the JSON to Python data types

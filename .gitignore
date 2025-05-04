@@ -1,32 +1,8 @@
-# Python
 *.pyc
-__pycache__/
-*.pyo
-*.pyd
-*.sqlite3
-
-# Django
-db.sqlite3
-/media/
-/staticfiles/
-/static/profile_pics/
-
-# Virtual Environments
 accessVirt/
-venv/
-
-#Environment variables
 .env
-env/
-
-# VSCode
-.vscode/
-# Logs
-*.log
-
-# OS Files
-.DS_Store
-Thumbs.db
+__pycache__/
+db.sqlite3
 
 #These simple instructions above tells Git to ignore the virtual environment directory and all *.pyc files, 
 #ensuring a clean and efficient repository.
