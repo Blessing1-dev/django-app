@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['localhost','127.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -165,5 +165,3 @@ LOGIN_URL = 'login'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend' 
 EMAIL_FILE_PATH = BASE_DIR / 'emails' 
 DEFAULT_FROM_EMAIL = 'webmaster@localhost'
-
-

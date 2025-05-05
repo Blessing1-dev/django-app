@@ -5,7 +5,7 @@ from .models import Module
 class ModuleForm(forms.ModelForm):
     class Meta:
         model = Module
-        fields = ['name', 'code', 'description']
+        fields = '__all__'
 
 
 class ContactForm(forms.Form): 

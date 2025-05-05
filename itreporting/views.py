@@ -3,11 +3,11 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin 
 from django.contrib.auth.models import User
-
+from django.db.models import Q
 from .models import Issue, Module
 from .forms import ContactForm, ModuleForm
 from django.contrib import messages
-from decouple import config, UndefinedValueError
+from decouple import config
 
 # Create your views here. 
 #This code will import the object HttpResponse which will use to render the views
@@ -19,10 +19,7 @@ def home(request):
     url = 'https://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&appid={}'
     cities = [('Sheffield', 'UK'), ('Derby', 'UK'), ('London', 'UK'), ('Valencia', 'Spain'), ('Melaka', 'Malaysia'), ('Bandung', 'Indonesia')]
     weather_data = []
-    try:
-        api_key = config('OPENWEATHER_API_KEY')
-    except UndefinedValueError:
-        api_key = None 
+    api_key = config('OPENWEATHER_API_KEY')
 
     for city in cities:
         city_weather = requests.get(url.format(city[0], city[1], api_key)).json() # Request the API data and convert the JSON to Python data types
@@ -45,7 +42,20 @@ def contact(request):
     return render(request, 'itreporting/contact.html', {'title': 'Contact'})
 
 def module_list(request):
+    query = request.GET.get('q')
+    category_type = request.GET.get('category_type')
+    availability = request.GET.get('availability')
+    
     modules = Module.objects.all()
+
+    if query:
+        modules = modules.filter(Q(name__icontains=query) | Q(code__icontains=query))
+
+    if category_type:
+        modules = modules.filter(category=category_type)
+
+    if availability:
+        modules = modules.filter(availability=availability)
 
     if request.method == 'POST':
         form = ModuleForm(request.POST)
@@ -53,9 +63,18 @@ def module_list(request):
             form.save()
             return redirect('itreporting:module_list')
     else:
+    
         form = ModuleForm()
+        
+    context = {
+        'form': form,
+        'modules': modules,
+        'query': query,
+        'category_type': category_type,
+        'availability': availability,
+    }    
 
-    return render(request, 'modules/module_list.html', {'modules': modules, 'form': form})
+    return render(request, 'modules/module_list.html', context)
 
 
 def report(request):

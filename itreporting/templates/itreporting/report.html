@@ -5,7 +5,7 @@
     <h1>Issues Reported</h1>
     {% for issue in issues %}
     <article class="media content-section">
-        <img class="rounded-circle article-img" src="{% static 'profile_pics/tree.jpg' %}"/>
+        <img class="rounded-circle article-img" src="{{ issue.author.profile.image.url }}">
         <div class="media-body">
             <div class="article-metadata">
                 {% if issue.author %}
