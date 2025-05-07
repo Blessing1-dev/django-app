@@ -1,9 +1,8 @@
 #we have to import path, else line 12 will throw a problem saying "path" is not defined
-from django.urls import path #, include
+from django.urls import path , include
 from .views import ContactFormView, PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, UserPostListView
-
-#we add invoke the home function from views.py
 from . import views
+from users import views as user_views
 
 #we define the namespace of the app, so the URL can be easily recognised and traced back to the application it 
 #is sourced from
@@ -15,6 +14,10 @@ urlpatterns = [
     path('about/', views.about, name='about'),  #The about us page
     path('contact/', ContactFormView.as_view(), name='contact'),  #The contact us page
     path('module/', views.module_list, name='module_list'),
+    path('module/<int:pk>/edit/', views.edit_module, name='edit_module'),
+    path('module/<int:pk>/delete/', views.delete_module, name='delete_module'),
+    path('register/<int:module_id>/', user_views.register_module, name='register_module'),
+    path('unregister/<int:module_id>/', user_views.unregister_module, name='unregister_module'),
     path('report/', PostListView.as_view(), name='report'),
     path('issue/', PostListView.as_view(), name='issue-list'),
     path('issue/<int:pk>', PostDetailView.as_view(), name = 'issue-detail'),
@@ -23,3 +26,4 @@ urlpatterns = [
     path('issue/<int:pk>/delete/', PostDeleteView.as_view(), name = 'issue-delete'),
     path('issue/<str:username>', UserPostListView.as_view(), name = 'user-issues'),
 ]
+

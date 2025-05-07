@@ -2,22 +2,9 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
+from users.models import Student
 
 # Create your models here.
-class Issue(models.Model):
-    type = models.CharField(max_length=100, choices = [('Hardware', 'Hardware'), ('Software', 'Software')])
-    room = models.CharField(max_length=100)
-    urgent = models.BooleanField(default = False)
-    details = models.TextField()
-    date_submitted = models.DateTimeField(default=timezone.now)
-    description = models.TextField()
-    author = models.ForeignKey(User, related_name = 'issues', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.type} Issue in {self.room}'
-    
-    def get_absolute_url(self):
-        return reverse('itreporting:issue-detail', kwargs = {'pk': self.pk})
 
 class Module(models.Model):
     CATEGORY_CHOICES = [ 
@@ -42,6 +29,18 @@ class Module(models.Model):
 
     def __str__(self):
         return f"{self.code} - {self.name}"
+
+class Registration(models.Model):
+    student = models.ForeignKey('users.Student', on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    registration_date = models.DateField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('student', 'module')  # Ensures a student can only register once per module
+
+    def __str__(self):
+        return f"{self.student.user.username} - {self.module.name}"
+
 
 class Enrollment(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -89,3 +88,18 @@ class Resource(models.Model):
     
     def __str__(self):
         return f"Resource: {self.title} for {self.module.name}"
+    
+class Issue(models.Model):
+    type = models.CharField(max_length=100, choices = [('Hardware', 'Hardware'), ('Software', 'Software')])
+    room = models.CharField(max_length=100)
+    urgent = models.BooleanField(default = False)
+    details = models.TextField()
+    date_submitted = models.DateTimeField(default=timezone.now)
+    description = models.TextField()
+    author = models.ForeignKey(User, related_name = 'issues', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.type} Issue in {self.room}'
+    
+    def get_absolute_url(self):
+        return reverse('itreporting:issue-detail', kwargs = {'pk': self.pk})

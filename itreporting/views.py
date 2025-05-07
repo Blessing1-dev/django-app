@@ -4,8 +4,11 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin 
 from django.contrib.auth.models import User
 from django.db.models import Q
-from .models import Issue, Module
+from .models import Issue, Module, Registration
+from users.models import Student
 from .forms import ContactForm, ModuleForm
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.paginator import Paginator
 from django.contrib import messages
 from decouple import config
 
@@ -41,26 +44,51 @@ def about(request):
 def contact(request):
     return render(request, 'itreporting/contact.html', {'title': 'Contact'})
 
+@login_required
 def module_list(request):
+    query = request.GET.get('q')
+    student = request.user.student
+    registered_modules = Registration.objects.filter(student=student).values_list('module_id', flat=True)
     query = request.GET.get('q')
     category_type = request.GET.get('category_type')
     availability = request.GET.get('availability')
+        
+    registered_modules = Registration.objects.filter(student=student).values_list('module_id', flat=True)
     
-    modules = Module.objects.all()
-
-    if query:
-        modules = modules.filter(Q(name__icontains=query) | Q(code__icontains=query))
-
+    if request.user.is_staff:
+        modules = Module.objects.all()
+    else:
+        modules = Module.objects.filter(courses_allowed__in=request.user.groups.all()).distinct()
+    
+    print("DEBUG - Filtered modules for user:", modules)
+    
     if category_type:
         modules = modules.filter(category=category_type)
+    
+    if availability == "open":
+        modules = modules.filter(availability='open')
+    elif availability == "closed":
+        modules = modules.filter(availability='closed')    
+     
+    if query:
+        modules = modules.filter(
+             Q(name__icontains=query) | Q(code__icontains=query))
 
-    if availability:
-        modules = modules.filter(availability=availability)
+    # Pagination
+    paginator = Paginator(modules, 4)  # 4 modules per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    query_params = request.GET.copy()
+    if 'page' in query_params:
+        query_params.pop('page')
+    query_string = query_params.urlencode()
 
     if request.method == 'POST':
         form = ModuleForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "Module added successfully.")  # ✅ success message
             return redirect('itreporting:module_list')
     else:
     
@@ -68,13 +96,34 @@ def module_list(request):
         
     context = {
         'form': form,
-        'modules': modules,
         'query': query,
         'category_type': category_type,
         'availability': availability,
+        'page_obj': page_obj,  # Use page_obj in template
+        'registered_modules': registered_modules,
     }    
 
     return render(request, 'modules/module_list.html', context)
+
+@user_passes_test(lambda u: u.is_staff)
+def edit_module(request, pk):
+    module = get_object_or_404(Module, pk=pk)
+    if request.method == 'POST':
+        form = ModuleForm(request.POST, instance=module)
+        if form.is_valid():
+            form.save()
+            return redirect('module_list')
+    else:
+        form = ModuleForm(instance=module)
+    return render(request, 'itreporting/edit_module.html', {'form': form, 'module': module})
+
+@user_passes_test(lambda u: u.is_staff)
+def delete_module(request, pk):
+    module = get_object_or_404(Module, pk=pk)
+    if request.method == 'POST':
+        module.delete()
+        return redirect('module_list')
+    return render(request, 'itreporting/confirm_delete.html', {'module': module})
 
 
 def report(request):

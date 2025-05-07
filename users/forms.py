@@ -1,7 +1,8 @@
 #Import the necessary modules
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Student
+from itreporting.models import Registration
 from django.contrib.auth.forms import UserCreationForm
 
 #Define a class named UserRegisterForm: and Add the additional fields within the class: Email
@@ -20,11 +21,16 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'email']
 
-class ProfileUpdateForm(forms.ModelForm):
+class StudentUpdateForm(forms.ModelForm):
     date_of_birth = forms.DateField(
         required=False,
         widget=forms.DateInput(attrs={'type': 'date'})  # this makes it a browser date picker!
     )
     class Meta:
-        model = Profile
+        model = Student
         fields = ['image', 'date_of_birth', 'address', 'city', 'country']
+        
+class RegistrationForm(forms.ModelForm):
+        class Meta:
+            model = Registration
+            fields = ['module'] 

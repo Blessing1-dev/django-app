@@ -3,23 +3,27 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Modules</h2>
-    
-    <form method="POST" class="mb-4">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-primary">Add Module</button>
-    </form>
+    <h2 class="mb-4">Modules</h2>
+
+    {% if user.is_staff %}
+        <form method="POST" class="mb-4">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Add Module</button>
+        </form>
+    {% endif %}
 
     <form method="get" class="mb-4">
         <div class="row g-2">
             <div class="col-md-4">
-                <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search by name or code">
+                <input type="text" name="q" value="{{ query|default_if_none:'' }}" class="form-control" placeholder="Search by name or code">
             </div>
             <div class="col-md-3">
                 <select name="category_type" class="form-select">
                     <option value="">All Categories</option>
                     <option value="core" {% if category_type == 'core' %}selected{% endif %}>Core</option>
+                    <option value="optional" {% if category_type == 'optional' %}selected{% endif %}>Optional</option>
+                    <option value="general" {% if category_type == 'general' %}selected{% endif %}>General</option>
                     <option value="elective" {% if category_type == 'elective' %}selected{% endif %}>Elective</option>
                 </select>
             </div>
@@ -36,21 +40,62 @@
         </div>
     </form>
 
-    <h3>All Modules</h3>
-    <ul class="list-group">
-        {% for module in modules %}
-            <li class="list-group-item">
-                <strong>{{ module.code }}</strong> - {{ module.name }}
-                <p>
-                    <strong>Category</strong> {{ module.get_category_display }} | 
-                    <strong>Availability:</strong> {{ module.get_availability_display }}</p>
-                <p>{{ module.description }}</p>
-            </li>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for module in page_obj %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ module.name }} ({{ module.code }})</h5>
+                        <p class="card-text">
+                            <strong>Credits:</strong> {{ module.credit }}<br>
+                            <strong>Description:</strong> {{ module.description }}<br>
+                            <strong>Category:</strong> {{ module.category|capfirst }}<br>
+                            <strong>Availability:</strong> {{ module.get_availability_display }}
+                        </p>
+
+                        {% if user.is_staff %}
+                            <a href="{% url 'itreporting:edit_module' pk=module.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'itreporting:delete_module' pk=module.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this module?');">Delete</a>
+                        {% endif %}
+
+                        {% if not user.is_staff %}
+                            {% if module.id in registered_modules %}
+                                <form action="{% url 'itreporting:unregister_module' module.id %}" method="post" class="mt-2">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Unregister</button>
+                                </form>
+                            {% else %}
+                                <form action="{% url 'itreporting:register_module' module.id %}" method="post" class="mt-2">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success btn-sm">Register</button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         {% empty %}
-            <li class="list-group-item">No modules yet.</li>
+            <p>No modules found.</p>
         {% endfor %}
-    </ul>
+    </div>
+
+    <nav aria-label="Module pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?{{ query_string }}&page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+            {% endif %}
+            <li class="page-item disabled">
+                <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            </li>
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?{{ query_string }}&page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    
 </div>
 {% endblock %}
-
-  

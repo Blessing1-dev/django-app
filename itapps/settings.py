@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     #my apps
     'itreporting.apps.ItreportingConfig',
     'users.apps.UsersConfig',
@@ -96,13 +97,25 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = { 
 
+    'default': { 
+
+        'ENGINE': 'django.db.backends.mysql', 
+
+        'NAME': os.environ['AZURE_DB_NAME'], 
+
+        'HOST': os.environ['AZURE_DB_HOST'], 
+
+        'PORT': os.environ['AZURE_DB_PORT'], 
+
+        'USER': os.environ['AZURE_DB_USER'], 
+
+        'PASSWORD': os.environ['AZURE_DB_PASSWORD'], 
+
+    } 
+
+} 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

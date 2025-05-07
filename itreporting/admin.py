@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import Issue, Module, Enrollment, InstructorProfile, ModuleSchedule, Assessment, Resource
 #from .models import Registration
-#from .models import Student
 
 # Register your models here.
 
@@ -13,7 +12,7 @@ admin.site.register(ModuleSchedule)
 admin.site.register(Assessment)
 admin.site.register(Resource)
 #admin.site.register(Registration)
-#admin.site.register(Student)
+
 
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):

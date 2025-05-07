@@ -23,11 +23,6 @@
         <header class="site-header">
             <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
                 <div class="container">
-                <a class="navbar-brand mr-4" href="{% url 'itreporting:home' %}">Student IT Services</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
-                    aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" href="{% url 'itreporting:home' %}">Home</a>
@@ -39,15 +34,14 @@
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                             {% if user.is_authenticated  %} 
-                            <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+                            <a class="nav-item nav-link" href="{% url 'users:student' %}">Profile</a>
                             <a class="nav-item nav-link" href="{% url 'itreporting:issue-create' %}">Report New Issue</a>
                             <!--<a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a> -->
                                 <form method="post" id="frm_logout" action="{% url 'logout' %}">
                                     {% csrf_token %}
                                     <a class="nav-item nav-link" href="javascript:$('#frm_logout').submit();">Logout</a> 
                                 </form>
-                        
-                                
+
                         
                             {% else %} 
                         
@@ -61,13 +55,18 @@
                 </div>
             </nav> 
         </header>
+{% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
         <div class="row">
             <div class="col-md-8">
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
             {% block content %}{% endblock %}
             </div>
             {% block sidebar %}{% endblock %}
