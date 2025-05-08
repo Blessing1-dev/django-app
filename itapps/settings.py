@@ -22,12 +22,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', 'django-insecure-+o(*2pvj+r6ehy9_!6219qf1x#qq96%5!7jug0o7+n_wo&wz#w')
 
+WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME', None) 
+
+DEBUG = WEBSITE_HOSTNAME == None 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+if DEBUG: 
+
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1'] 
+
+else: 
+
+    ALLOWED_HOSTS = [WEBSITE_HOSTNAME] 
+
+    CSRF_TRUSTED_ORIGINS = [f'https://{WEBSITE_HOSTNAME}'] 
+
 
 
 # Application definition
@@ -51,6 +62,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     #My api app
     'api',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -151,9 +163,35 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'  
+# STATIC_URL = 'static/'
+# MEDIA_ROOT = BASE_DIR / 'media'
+# MEDIA_URL = '/media/'
+
+AZURE_SA_NAME = os.environ['AZURE_SA_NAME']
+AZURE_SA_KEY = os.environ['AZURE_SA_KEY']
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.azure_storage.AzureStorage",
+        "OPTIONS": {
+            "account_name": AZURE_SA_NAME,
+            "account_key": AZURE_SA_KEY,
+            "azure_container": "media",
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.azure_storage.AzureStorage",
+        "OPTIONS": {
+            "account_name": AZURE_SA_NAME,
+            "account_key": AZURE_SA_KEY,
+            "azure_container": "static",
+        },
+    },
+}
+
+STATIC_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/static/'
+
+MEDIA_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/media/' 
 
 # Directory where static files will be collected during deployment
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -161,8 +199,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Additional locations for static files (do NOT include STATIC_ROOT here)
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    "/home/student/Desktop/Group4/django-app/static",
-    os.path.join(BASE_DIR, 'static'),  # Local static files directory
 ]
 
 # Default primary key field type

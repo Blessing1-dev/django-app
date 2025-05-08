@@ -10,15 +10,16 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% url 'itreporting:home' %}" />
-    <link rel="stylesheet" type="text/css" href="{% url 'itreporting:about' %}" />
-    <link rel="stylesheet" type="text/css" href="{% url 'itreporting:contact' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/itreporting:home.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/itreporting:about.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/itreporting:contact.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
-    
-    <title>SHEFFIELD HALLAM UNIVERSITY - {{title}}</title>
+
+    <title>ARDENT HORIZON UNIVERSITY - {{title}}</title>
 </head>
 
-<body>
+<body class="{% block body_class %}{% endblock %}">
+
     <div class="container">
         <header class="site-header">
             <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
@@ -27,7 +28,7 @@
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" href="{% url 'itreporting:home' %}">Home</a>
                         <a class="nav-item nav-link" href="{% url 'itreporting:about' %}">About</a>
-                        <a class="nav-item nav-link" href="{% url 'itreporting:report' %}">Report</a>
+                        <!--<a class="nav-item nav-link" href="{% url 'itreporting:report' %}">Report</a>-->
                         <a class="nav-item nav-link" href="{% url 'itreporting:contact' %}">Contact</a>
                         <a class="nav-item nav-link" href="{% url 'itreporting:module_list' %}">Module</a>
                     </div>
@@ -35,7 +36,7 @@
                     <div class="navbar-nav">
                             {% if user.is_authenticated  %} 
                             <a class="nav-item nav-link" href="{% url 'users:student' %}">Profile</a>
-                            <a class="nav-item nav-link" href="{% url 'itreporting:issue-create' %}">Report New Issue</a>
+                            <a class="nav-item nav-link" href="{% url 'itreporting:issue-create' %}">Report Issue</a>
                             <!--<a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a> -->
                                 <form method="post" id="frm_logout" action="{% url 'logout' %}">
                                     {% csrf_token %}
@@ -55,6 +56,7 @@
                 </div>
             </nav> 
         </header>
+
 {% if messages %}
     <div class="container mt-3">
         {% for message in messages %}
@@ -74,7 +76,7 @@
                 
                 <div class="content-section">
                     <h3>General Information</h3>
-                    <p class='text-muted'>Lorem ipsum dolor sit amet, iudico docendi inciderint per eu, ea vis scripta senserit periculis.
+                    <p class='text-muted'>Ardent Horizon University is a vibrant academic community dedicated to excellence in teaching, research, and student success. Located in the heart of England. Our university offers a wide range of undergraduate and postgraduate programs across diverse fields of study. With a commitment to innovation, inclusion, and global engagement, we empower students to reach their full potential and make a meaningful impact in the world. Our campus is home to state-of-the-art facilities, supportive faculty, and a dynamic student life experience designed to foster growth both inside and outside the classroom
                       <ul class="list-group">
                         <li class="list-group-item list-group-item-light">Latest Issues Reported</li>
                         <li class="list-group-item list-group-item-light">IT Policies</li>

@@ -1,9 +1,15 @@
-{% extends "itreporting/base.html" %}
-
+{% extends "itreporting/base.html" %} 
+{% block body_class %}home-background{% endblock %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% block content %}
-<header class="bg-primary text-white text-center py-5">
-    <div class="container">
-        <a class="navbar-brand" href="#">Student IT Services</a>
+<h1>WELCOME TO ARDENT HORIZON UNIVERSITY</h1>
+<div style="padding: 20px;">
+    
+</div>
+<header class="text-white text-center d-flex align-items-center justify-content-center"
+        style="background: url('{% static 'images/background.jpeg' %}') no-repeat center center; background-size: cover; min-height: 600px;">
+</header>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -18,8 +24,8 @@
     </div>
 
 <section id="intro" class="py-5 bg-light">
+    <h1>Welcome to Ardent Horizon University</h1>
     <div class="container">
-        <h1>Welcome to SHEFFIELD HALLAM UNIVERSITY</h1>
         <p>Your gateway to quality education.</p>
         <a href="#" class="btn btn-primary">Get Started</a>
     </div>
@@ -58,7 +64,7 @@
 
 <section class="py-5">
     <div class="container text-center">
-        <h2 class="mb-4">Why Choose Sheffield Hallam?</h2>
+        <h2 class="mb-4">Why Choose Ardent Horizon?</h2>
         <div class="row">
             <div class="col-md-4">
                 <i class="bi bi-mortarboard-fill display-4 text-primary"></i>
@@ -119,7 +125,7 @@
 <section class="py-5">
     <div class="container text-center">
         <h2 class="mb-4">Vibrant Student Life</h2>
-        <p class="mb-4">At Sheffield Hallam, learning goes beyond the classroom. Discover clubs, sports, volunteer opportunities, and more.</p>
+        <p class="mb-4">At Ardent Horizon, learning goes beyond the classroom. Discover clubs, sports, volunteer opportunities, and more.</p>
         <img src="https://via.placeholder.com/1000x400?text=Campus+Life" class="img-fluid rounded" alt="Student Life">
     </div>
 </section>
@@ -131,7 +137,7 @@
         <div class="row">
             <div class="col-md-6">
                 <blockquote class="blockquote">
-                    <p>"Sheffield Hallam has given me the confidence and skills to thrive in the tech industry."</p>
+                    <p>"Ardent Horizon has given me the confidence and skills to thrive in the tech industry."</p>
                     <footer class="blockquote-footer">Amara, BSc Computer Science</footer>
                 </blockquote>
             </div>
@@ -183,7 +189,7 @@
 
 <footer class="bg-dark text-white text-center py-4">
     <div class="container">
-        <p>&copy; 2025 Sheffield Hallam University. All rights reserved.</p>
+        <p>&copy; 2025 Ardent Horizon University. All rights reserved.</p>
         <div class="d-flex justify-content-center gap-3">
             <a href="#" class="text-white text-decoration-none">Privacy Policy</a>
             <a href="#" class="text-white text-decoration-none">Terms</a>

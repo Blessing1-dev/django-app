@@ -83,3 +83,12 @@ body {
     text-decoration: none;
   }
   
+  
+@media (max-width: 768px) {
+  header {
+      min-height: 400px;
+      padding: 2rem 1rem;
+  }
+}
+
+  
