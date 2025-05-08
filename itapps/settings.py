@@ -29,15 +29,18 @@ WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME', None)
 DEBUG = WEBSITE_HOSTNAME == None 
 # SECURITY WARNING: don't run with debug turned on in production!
 
+ALLOWED_HOSTS = [] 
 if DEBUG: 
 
     ALLOWED_HOSTS = ['localhost', '127.0.0.1'] 
 
 else: 
 
-    ALLOWED_HOSTS = [WEBSITE_HOSTNAME] 
+    [WEBSITE_HOSTNAME, f"{WEBSITE_HOSTNAME}.azurewebsites.net"]
+    
+if not DEBUG: 
 
-    CSRF_TRUSTED_ORIGINS = [f'https://{WEBSITE_HOSTNAME}'] 
+    CSRF_TRUSTED_ORIGINS = ['https://{WEBSITE_HOSTNAME}',f"{WEBSITE_HOSTNAME}.azurewebsites.net"] 
 
 
 
