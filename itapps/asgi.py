@@ -10,9 +10,7 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/asgi/
 import os
 
 from django.core.asgi import get_asgi_application
-from utility.load_env import load_environment_variables
 
-load_environment_variables()
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'itapps.settings')
 

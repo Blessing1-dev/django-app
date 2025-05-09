@@ -13,10 +13,15 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+from dotenv import load_dotenv
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+dotenv_path = os.path.join(BASE_DIR, 'utility', '.env')
 
+load_dotenv(dotenv_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -25,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME', None) 
-DEBUG = WEBSITE_HOSTNAME is None 
+DEBUG = WEBSITE_HOSTNAME == None 
 # SECURITY WARNING: don't run with debug turned on in production!
 
 if DEBUG: 
@@ -173,6 +178,17 @@ USE_TZ = True
 # MEDIA_ROOT = BASE_DIR / 'media'
 # MEDIA_URL = '/media/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Additional locations for static files (do NOT include STATIC_ROOT here)
+
+
 AZURE_SA_NAME = os.getenv('AZURE_SA_NAME')
 AZURE_SA_KEY = os.getenv('AZURE_SA_KEY')
 
@@ -200,12 +216,7 @@ STATIC_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/static/'
 MEDIA_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/media/' 
 
 # Directory where static files will be collected during deployment
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Additional locations for static files (do NOT include STATIC_ROOT here)
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
