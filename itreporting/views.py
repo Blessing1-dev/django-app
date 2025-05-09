@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin 
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Issue, Module, Registration
 from users.models import Student
 from .forms import ContactForm, ModuleForm
@@ -47,6 +48,14 @@ def contact(request):
 @login_required
 def module_list(request):
     query = request.GET.get('q')
+    print(query)
+    try:
+        student = request.user.student
+        print(student)
+    except ObjectDoesNotExist:
+        messages.error(request, "You need to complete your student profile first.")
+        return redirect('update_profile')  # Replace with your actual profile completion page
+
     student = request.user.student
     registered_modules = Registration.objects.filter(student=student).values_list('module_id', flat=True)
     query = request.GET.get('q')
@@ -75,7 +84,7 @@ def module_list(request):
              Q(name__icontains=query) | Q(code__icontains=query))
 
     # Pagination
-    paginator = Paginator(modules, 4)  # 4 modules per page
+    paginator = Paginator(modules, 6)  # 6 modules per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     

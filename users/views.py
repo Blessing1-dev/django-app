@@ -49,8 +49,11 @@ logger = logging.getLogger(__name__)
 @login_required
 def register_module(request, module_id):
     student = request.user.student
+    print(student)
     module = get_object_or_404(Module, id=module_id)
+    print(module)
     if not Registration.objects.filter(student=student, module=module).exists():
+        print('here')
         Registration.objects.create(student=student, module=module)
         messages.success(request, f'You have successfully registered for the {module.name} module.')
 
@@ -71,6 +74,7 @@ def register_module(request, module_id):
     else:
         messages.error(request, f'You are already registered for the {module.name} module.')
 
+    
     return redirect('module_list')
 
 
