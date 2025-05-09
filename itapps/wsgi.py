@@ -10,6 +10,9 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
+from utility.load_env import load_environment_variables
+
+load_environment_variables()
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'itapps.settings')
 

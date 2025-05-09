@@ -22,25 +22,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', 'django-insecure-+o(*2pvj+r6ehy9_!6219qf1x#qq96%5!7jug0o7+n_wo&wz#w')
+SECRET_KEY = config('SECRET_KEY')
 
 WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME', None) 
-
-DEBUG = WEBSITE_HOSTNAME == None 
+DEBUG = WEBSITE_HOSTNAME is None 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = [] 
 if DEBUG: 
 
     ALLOWED_HOSTS = ['localhost', '127.0.0.1'] 
 
 else: 
+    if WEBSITE_HOSTNAME:
+        ALLOWED_HOSTS = [WEBSITE_HOSTNAME, f"{WEBSITE_HOSTNAME}.azurewebsites.net"]
+    else:
+        ALLOWED_HOSTS = []
+        
+if not DEBUG and WEBSITE_HOSTNAME: 
 
-    [WEBSITE_HOSTNAME, f"{WEBSITE_HOSTNAME}.azurewebsites.net"]
-    
-if not DEBUG: 
-
-    CSRF_TRUSTED_ORIGINS = ['https://{WEBSITE_HOSTNAME}',f"{WEBSITE_HOSTNAME}.azurewebsites.net"] 
+    CSRF_TRUSTED_ORIGINS = [
+        f'https://{WEBSITE_HOSTNAME}',
+        f'https://{WEBSITE_HOSTNAME}.azurewebsites.net'
+    ] 
 
 
 
@@ -118,15 +121,15 @@ DATABASES = {
 
         'ENGINE': 'django.db.backends.mysql', 
 
-        'NAME': os.environ['AZURE_DB_NAME'], 
+        'NAME': os.getenv('AZURE_DB_NAME'), 
 
-        'HOST': os.environ['AZURE_DB_HOST'], 
+        'HOST': os.getenv('AZURE_DB_HOST'), 
 
-        'PORT': os.environ['AZURE_DB_PORT'], 
+        'PORT': os.getenv('AZURE_DB_PORT'), 
 
-        'USER': os.environ['AZURE_DB_USER'], 
+        'USER': os.getenv('AZURE_DB_USER'), 
 
-        'PASSWORD': os.environ['AZURE_DB_PASSWORD'], 
+        'PASSWORD': os.getenv('AZURE_DB_PASSWORD'), 
 
     } 
 
@@ -170,8 +173,8 @@ USE_TZ = True
 # MEDIA_ROOT = BASE_DIR / 'media'
 # MEDIA_URL = '/media/'
 
-AZURE_SA_NAME = os.environ['AZURE_SA_NAME']
-AZURE_SA_KEY = os.environ['AZURE_SA_KEY']
+AZURE_SA_NAME = os.getenv('AZURE_SA_NAME')
+AZURE_SA_KEY = os.getenv('AZURE_SA_KEY')
 
 STORAGES = {
     "default": {

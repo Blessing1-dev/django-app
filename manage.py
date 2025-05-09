@@ -2,8 +2,10 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from utility.load_env import load_environment_variables
 
 
+load_environment_variables()
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'itapps.settings')
