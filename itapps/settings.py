@@ -30,7 +30,7 @@ load_dotenv(dotenv_path)
 SECRET_KEY = config('SECRET_KEY')
 
 WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME', None) 
-DEBUG = WEBSITE_HOSTNAME == None 
+DEBUG = WEBSITE_HOSTNAME is None 
 # SECURITY WARNING: don't run with debug turned on in production!
 
 if DEBUG: 

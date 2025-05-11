@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/itreporting:contact.css' %}" /> {% endcomment %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
 
-    <title>ARDENT HORIZON UNIVERSITY - {{title}}</title>
+    <title>{% block title %}ARDENT HORIZON UNIVERSITY{% endblock %}</title>
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
