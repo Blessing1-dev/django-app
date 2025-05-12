@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-import requests, logging
-
+import requests
+import logging
 from .forms import UserRegisterForm, UserUpdateForm, StudentUpdateForm
 from .models import Student
 from itreporting.models import Module, Registration
 
+logger = logging.getLogger(__name__)
 @login_required
 def call_azure_function(request):
     if request.method == 'POST':
@@ -21,9 +22,11 @@ def call_azure_function(request):
 
         try:
             response = requests.post(azure_url, json=payload)
+            response.raise_for_status()
             result = response.json()
             return JsonResponse({'status': 'success', 'azure_response': result})
-        except Exception as e:
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Error calling Azure function: {str(e)}")
             return JsonResponse({'status': 'error', 'message': str(e)})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
@@ -35,8 +38,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             Student.objects.create(user=user)
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created! Now you can login!')
+            messages.success(request, 'Account created! Now you can login!')
             return redirect('login')
         else:
             messages.warning(request, 'Unable to create account.')
@@ -49,11 +51,9 @@ logger = logging.getLogger(__name__)
 @login_required
 def register_module(request, module_id):
     student = request.user.student
-    print(student)
     module = get_object_or_404(Module, id=module_id)
-    print(module)
+    
     if not Registration.objects.filter(student=student, module=module).exists():
-        print('here')
         Registration.objects.create(student=student, module=module)
         messages.success(request, f'You have successfully registered for the {module.name} module.')
 

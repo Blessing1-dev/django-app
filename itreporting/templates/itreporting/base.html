@@ -10,9 +10,6 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/itreporting:home.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/itreporting:about.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/itreporting:contact.css' %}" /> {% endcomment %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
 
     <title>{% block title %}ARDENT HORIZON UNIVERSITY{% endblock %}</title>
@@ -28,7 +25,6 @@
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" href="{% url 'itreporting:home' %}">Home</a>
                         <a class="nav-item nav-link" href="{% url 'itreporting:about' %}">About</a>
-                        <!--<a class="nav-item nav-link" href="{% url 'itreporting:report' %}">Report</a>-->
                         <a class="nav-item nav-link" href="{% url 'itreporting:contact' %}">Contact</a>
                         <a class="nav-item nav-link" href="{% url 'itreporting:module_list' %}">Module</a>
                     </div>
@@ -74,17 +70,7 @@
             {% block sidebar %}{% endblock %}
             <div class="col-md-4">
                 
-                <div class="content-section">
-                    <h3>General Information</h3>
-                    <p class='text-muted'>Ardent Horizon University is a vibrant academic community dedicated to excellence in teaching, research, and student success. Located in the heart of England. Our university offers a wide range of undergraduate and postgraduate programs across diverse fields of study. With a commitment to innovation, inclusion, and global engagement, we empower students to reach their full potential and make a meaningful impact in the world. Our campus is home to state-of-the-art facilities, supportive faculty, and a dynamic student life experience designed to foster growth both inside and outside the classroom
-                      <ul class="list-group">
-                        <li class="list-group-item list-group-item-light">Latest Issues Reported</li>
-                        <li class="list-group-item list-group-item-light">IT Policies</li>
-                        <li class="list-group-item list-group-item-light">IT Regulations</li>
-                        <li class="list-group-item list-group-item-light">Upcoming Events</li>
-                      </ul>
-                    </p>
-                  </div>
+                
             </div>
         </div>
     </div>

@@ -1,12 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin 
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Issue, Module, Registration
-from users.models import Student
 from .forms import ContactForm, ModuleForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
@@ -91,7 +89,6 @@ def module_list(request):
     query_params = request.GET.copy()
     if 'page' in query_params:
         query_params.pop('page')
-    query_string = query_params.urlencode()
 
     if request.method == 'POST':
         form = ModuleForm(request.POST)

@@ -3,13 +3,16 @@
 {% block title %}About us | Ardent Horizon University{% endblock %}
 {% block content %}
 
-<header class="text-white text-center py-5" style="background: url('/static/images/background.jpeg') no-repeat center center; background-size: cover; min-height: 500px;">
+<header >
     <div class="container">
         <h1 class="display-4 fw-bold">About Ardent Horizon University</h1>
         <p class="lead">Excellence in Education and Innovation Since 1978</p>
-    </div>
 </header>
 
+<div class="full-page-background"
+    style="background: url('{% static 'images/background.jpeg' %}') no-repeat center center; >
+      background-size: cover; min-height: 100vh; position: relative;">
+</div>
 
 <section id="history" class="py-5 bg-light">
     <div class="container">
@@ -24,13 +27,13 @@
         </div>
     </div>
 </section>
-
+</div>
 
 <section id="mission" class="py-5">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6 mb-4 mb-md-0">
-                <img src="https://via.placeholder.com/600x400" alt="Mission Vision" class="img-fluid rounded shadow">
+                <img src="{% static 'images/tools.jpeg' %}" alt="Mission Vision" class="img-fluid rounded shadow">
             </div>
             <div class="col-md-6">
                 <h2 class="mb-3">Mission & Vision</h2>
@@ -42,7 +45,6 @@
         </div>
     </div>
 </section>
-
 
 <section id="facilities" class="py-5 bg-light">
     <div class="container">
@@ -79,7 +81,6 @@
     </div>
 </section>
 
-
 <section id="contact" class="bg-dark text-white py-5">
     <div class="container text-center">
         <h2 class="mb-3">Contact Us</h2>
@@ -87,5 +88,4 @@
         <p class="fs-5">Phone: +447881155367</p>
     </div>
 </section>
-
 {% endblock %}
