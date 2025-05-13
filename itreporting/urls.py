@@ -1,5 +1,5 @@
 #we have to import path, else line 12 will throw a problem saying "path" is not defined
-from django.urls import path , include
+from django.urls import path
 from .views import ContactFormView, PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, UserPostListView
 from . import views
 from users import views as user_views

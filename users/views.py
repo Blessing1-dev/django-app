@@ -78,7 +78,7 @@ def register_module(request, module_id):
         messages.error(request, f'You are already registered for the {module.name} module.')
 
     
-    return redirect('module_list')
+    return redirect('itreporting:module_list')
 
 
 @login_required
@@ -112,7 +112,7 @@ def unregister_module(request, module_id):
     else:
         messages.error(request, f'You are not registered for the {module.name} module.')
 
-    return redirect('module_list')
+    return redirect('itreporting:module_list')
 
 
 @login_required
