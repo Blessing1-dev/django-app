@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import requests
 import logging
+from datetime import datetime
 from .forms import UserRegisterForm, UserUpdateForm, StudentUpdateForm
 from .models import Student
 from itreporting.models import Module, Registration
@@ -57,11 +58,13 @@ def register_module(request, module_id):
         Registration.objects.create(student=student, module=module)
         messages.success(request, f'You have successfully registered for the {module.name} module.')
 
-        # Optional: Call Azure Function after successful registration
+        #Call Azure Function after successful registration
         payload = {
             'student': request.user.username,
             'module': module.name,
             'email': request.user.email,
+            "action": "registered",
+            "date": str(datetime.now().date())
         }
         azure_url = 'https://ardenthorizonuni.azurewebsites.net/api/http_trigger1?code=ymJzicNJp5oc_8Lr2FjPREm__-jD1b29hoG1d2vMwOuzAzFuEY-yvA=='
         
@@ -87,6 +90,25 @@ def unregister_module(request, module_id):
     if registration:
         registration.delete()
         messages.success(request, f'You have successfully unregistered from the {module.name} module.')
+
+        # Azure Function payload
+        payload = {
+            'student': request.user.username,
+            'module': module.name,
+            'email': request.user.email,
+            'action': 'unregistered',
+            'date': str(datetime.now().date())
+        }
+
+        azure_url = 'https://ardenthorizonuni.azurewebsites.net/api/http_trigger1?code=ymJzicNJp5oc_8Lr2FjPREm__-jD1b29hoG1d2vMwOuzAzFuEY-yvA=='
+
+        try:
+            response = requests.post(azure_url, json=payload)
+            response.raise_for_status()
+            print(f"Azure Function response: {response.status_code} - {response.text}")
+        except requests.exceptions.RequestException as e:
+            messages.error(request, f"Error calling Azure Function: {str(e)}")
+
     else:
         messages.error(request, f'You are not registered for the {module.name} module.')
 
