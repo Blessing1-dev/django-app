@@ -1,7 +1,9 @@
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 import requests
 import logging
 from datetime import datetime
@@ -15,12 +17,14 @@ def call_azure_function(request):
     if request.method == 'POST':
         payload = {
             'student': request.user.username,
-            'module': request.POST.get('module', 'CS101'),  # Default to CS101 if not provided
+            'module': request.POST.get('module', 'ECO101'),  # Default to CS101 if not provided
             'email': request.user.email,
+            'action': 'registered',  # or 'unregistered' depending on context
+            'date': str(datetime.now().date())  # Include the current date
         }
-
+        
         azure_url = 'https://ardenthorizonuni.azurewebsites.net/api/http_trigger1?code=ymJzicNJp5oc_8Lr2FjPREm__-jD1b29hoG1d2vMwOuzAzFuEY-yvA=='
-
+        
         try:
             response = requests.post(azure_url, json=payload)
             response.raise_for_status()
@@ -32,6 +36,40 @@ def call_azure_function(request):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
+@csrf_exempt
+def send_registration_email(request):
+    if request.method == "POST":
+        try:
+            # Parse the incoming JSON data
+            data = json.loads(request.body)
+            
+            # Validate required fields
+            required_fields = ['email', 'module', 'action', 'date']
+            missing_fields = [field for field in required_fields if field not in data]
+            
+            if missing_fields:
+                return JsonResponse({"error": f"Missing required fields: {', '.join(missing_fields)}"}, status=400)
+            
+            # Process the email sending logic using data
+            student = data.get('student', 'Unknown Student')
+            email = data['email']
+            module = data['module']
+            action = data['action']
+            date = data['date']
+            
+            logger.info(f"Student: {student}, Email: {email}, Module: {module}, Action: {action}, Date: {date}")
+            # You can add the code to send an email here (this is a placeholder)
+            # Example: send_email_to_user(email, module, action, date)
+
+            return JsonResponse({"message": "Email sent successfully!"}, status=200)
+        
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON data."}, status=400)
+        except Exception as e:
+            logger.error(f"Error processing registration email: {str(e)}")
+            return JsonResponse({"error": str(e)}, status=500)
+    else:
+        return JsonResponse({"error": "Invalid request method."}, status=405)
 
 def register(request):
     if request.method == 'POST':
@@ -66,6 +104,7 @@ def register_module(request, module_id):
             "action": "registered",
             "date": str(datetime.now().date())
         }
+        
         azure_url = 'https://ardenthorizonuni.azurewebsites.net/api/http_trigger1?code=ymJzicNJp5oc_8Lr2FjPREm__-jD1b29hoG1d2vMwOuzAzFuEY-yvA=='
         
         try:
@@ -101,7 +140,7 @@ def unregister_module(request, module_id):
         }
 
         azure_url = 'https://ardenthorizonuni.azurewebsites.net/api/http_trigger1?code=ymJzicNJp5oc_8Lr2FjPREm__-jD1b29hoG1d2vMwOuzAzFuEY-yvA=='
-
+        
         try:
             response = requests.post(azure_url, json=payload)
             response.raise_for_status()
