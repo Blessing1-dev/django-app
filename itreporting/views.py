@@ -19,6 +19,13 @@ from decouple import config
 def dashboard_view(request):
     return render(request, 'itreporting/dashboard.html')
 
+def restricted_view(request):
+    if not request.user.is_authenticated or not request.user.groups.filter(name='Students').exists():
+        messages.warning(request, "You are not authorized to access that page.")
+        return redirect('home')  
+    # Otherwise, allow access
+    return render(request, 'itreporting:home.html')
+
 def home(request):
     import requests
     url = 'https://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&appid={}'

@@ -1,0 +1,4 @@
+To: admin@university.edu
+Subject: Student registereded for Computer Science
+
+Student Omokaro (staff@ahu.ac.uk) has just registereded for Computer Science.
