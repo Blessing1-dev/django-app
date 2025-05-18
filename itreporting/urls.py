@@ -10,14 +10,15 @@ app_name = "itreporting"
 
 #we create a route or a url for the homepage and map the function to the route
 urlpatterns = [ 
+    path('dashboard/', views.dashboard_view, name='dashboard'),
     path('', views.home, name='home'),    #The home view path. The empty string '' makes this the default route
     path('about/', views.about, name='about'),  #The about us page
     path('contact/', ContactFormView.as_view(), name='contact'),  #The contact us page
     path('module/', views.module_list, name='module_list'),
-    path('module/<int:pk>/edit/', views.edit_module, name='edit_module'),
-    path('module/<int:pk>/delete/', views.delete_module, name='delete_module'),
-    path('register/<int:module_id>/', user_views.register_module, name='register_module'),
-    path('unregister/<int:module_id>/', user_views.unregister_module, name='unregister_module'),
+    path('module/<str:code>/edit/', views.edit_module, name='edit_module'),
+    path('module/<str:code>/delete/', views.delete_module, name='delete_module'),
+    path('register/<str:code>/', user_views.register_module, name='register_module'),
+    path('unregister/<str:code>/', user_views.unregister_module, name='unregister_module'),
     path('report/', PostListView.as_view(), name='report'),
     path('issue/', PostListView.as_view(), name='issue-list'),
     path('issue/<int:pk>', PostDetailView.as_view(), name = 'issue-detail'),

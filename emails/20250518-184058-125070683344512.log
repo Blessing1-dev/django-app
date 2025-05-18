@@ -1,0 +1,26 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Password reset on 127.0.0.1:8000
+From: webmaster@localhost
+To: emmanuel@ahu.ac.uk
+Date: Sun, 18 May 2025 18:40:58 -0000
+Message-ID: 
+ <174759365882.93642.7661661413352737171@lab000001.internal.cloudapp.net>
+
+
+You're receiving this email because you requested a password reset for your user account at 127.0.0.1:8000.
+
+Please go to the following page and choose a new password:
+
+http://127.0.0.1:8000/reset/NQ/cq0h8a-e47f57c09b35a89711f96837844b5696/
+
+Your username, in case you’ve forgotten: Emma
+
+Thanks for using our site!
+
+The 127.0.0.1:8000 team
+
+
+
+-------------------------------------------------------------------------------

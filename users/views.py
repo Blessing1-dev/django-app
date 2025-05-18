@@ -23,7 +23,7 @@ def call_azure_function(request):
             'date': str(datetime.now().date())  # Include the current date
         }
         
-        azure_url = 'https://ardenthorizonuni.azurewebsites.net/api/http_trigger1?code=ymJzicNJp5oc_8Lr2FjPREm__-jD1b29hoG1d2vMwOuzAzFuEY-yvA=='
+        azure_url = 'http://localhost:7071/api/http_trigger1'
 
         try:
             response = requests.post(azure_url, json=payload)
@@ -88,9 +88,9 @@ def register(request):
 logger = logging.getLogger(__name__)
 
 @login_required
-def register_module(request, module_id):
+def register_module(request, code):
     student = request.user.student
-    module = get_object_or_404(Module, id=module_id)
+    module = get_object_or_404(Module,code=code)
     
     if not Registration.objects.filter(student=student, module=module).exists():
         Registration.objects.create(student=student, module=module)
@@ -105,7 +105,7 @@ def register_module(request, module_id):
             "date": str(datetime.now().date())
         }
         
-        azure_url = 'https://ardenthorizonuni.azurewebsites.net/api/http_trigger1?code=ymJzicNJp5oc_8Lr2FjPREm__-jD1b29hoG1d2vMwOuzAzFuEY-yvA=='
+        azure_url = 'http://localhost:7071/api/http_trigger1'
 
 
         try:
@@ -122,9 +122,9 @@ def register_module(request, module_id):
 
 
 @login_required
-def unregister_module(request, module_id):
+def unregister_module(request, code):
     student = request.user.student
-    module = get_object_or_404(Module, id=module_id)
+    module = get_object_or_404(Module, code=code)
     registration = Registration.objects.filter(student=student, module=module).first()
 
     if registration:
@@ -140,7 +140,7 @@ def unregister_module(request, module_id):
             'date': str(datetime.now().date())
         }
 
-        azure_url = 'https://ardenthorizonuni.azurewebsites.net/api/http_trigger1?code=ymJzicNJp5oc_8Lr2FjPREm__-jD1b29hoG1d2vMwOuzAzFuEY-yvA=='
+        azure_url = 'http://localhost:7071/api/http_trigger1'
 
 
         try:
@@ -180,7 +180,7 @@ def update_profile(request):
             u_form.save()
             p_form.save()
             messages.success(request, 'Your account has been successfully updated!')
-            return redirect('student_profile')
+            return redirect('users:student')
 
     else:
         u_form = UserUpdateForm(instance=request.user)

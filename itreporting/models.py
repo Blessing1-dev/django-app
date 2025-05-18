@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
-from users.models import Student
+#from users.models import Student
 
 # Create your models here.
 

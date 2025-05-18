@@ -16,6 +16,9 @@ from decouple import config
 #from django.http import HttpResponse           #As templates now manage responses, you can remove the from django.http import HttpResponse line in views.py.
 
 #define a function for the home view
+def dashboard_view(request):
+    return render(request, 'itreporting/dashboard.html')
+
 def home(request):
     import requests
     url = 'https://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&appid={}'
@@ -110,24 +113,31 @@ def module_list(request):
     return render(request, 'modules/module_list.html', context)
 
 @user_passes_test(lambda u: u.is_staff)
-def edit_module(request, pk):
-    module = get_object_or_404(Module, pk=pk)
+def edit_module(request, code):
+    module = get_object_or_404(Module, code=code)
+    
     if request.method == 'POST':
         form = ModuleForm(request.POST, instance=module)
         if form.is_valid():
             form.save()
-            return redirect('module_list')
+            messages.success(request, f"Module '{module.name}' was successfully updated.")
+            return redirect('itreporting:module_list')
+        else:
+            messages.error(request, "Failed to update the module. Please check the form.")
     else:
         form = ModuleForm(instance=module)
-    return render(request, 'itreporting/edit_module.html', {'form': form, 'module': module})
+    return render(request, 'modules/edit_module.html', {'form': form, 'module': module})
 
 @user_passes_test(lambda u: u.is_staff)
-def delete_module(request, pk):
-    module = get_object_or_404(Module, pk=pk)
+def delete_module(request, code):
+    module = get_object_or_404(Module, code=code)
+    
     if request.method == 'POST':
+        module_name = module.name
         module.delete()
-        return redirect('module_list')
-    return render(request, 'itreporting/confirm_delete.html', {'module': module})
+        messages.success(request, f"Module '{module_name}' was successfully deleted.")
+        return redirect('itreporting:module_list')
+    return render(request, 'modules/confirm_delete.html', {'module': module})
 
 
 def report(request):

@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container mt-4">
     <h2 class="mb-4">Modules</h2>
-
+    
     {% if user.is_staff %}
         <form method="POST" class="mb-4">
             {% csrf_token %}
@@ -55,19 +55,19 @@
                         </p>
 
                         {% if user.is_staff %}
-                            <a href="{% url 'itreporting:edit_module' pk=module.pk %}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="{% url 'itreporting:delete_module' pk=module.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this module?');">Delete</a>
+                            <a href="{% url 'itreporting:edit_module' module.code %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'itreporting:delete_module' module.code %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this module?');">Delete</a>
                         {% endif %}
 
                         {% if not user.is_staff %}
                             {% if module.availability == 'open' %}
                                 {% if module.id in registered_modules %}
-                                    <form action="{% url 'itreporting:unregister_module' module.id %}" method="post" class="mt-2">
+                                    <form action="{% url 'itreporting:unregister_module' module.code %}" method="post" class="mt-2">
                                     {% csrf_token %}
                                         <button type="submit" class="btn btn-outline-danger btn-sm">Unregister</button>
                                     </form>
                                 {% else %}
-                                    <form action="{% url 'itreporting:register_module' module.id %}" method="post" class="mt-2">
+                                    <form action="{% url 'itreporting:register_module' module.code %}" method="post" class="mt-2">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-success btn-sm">Register</button>
                                     </form>

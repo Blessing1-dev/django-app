@@ -27,13 +27,14 @@
                         <a class="nav-item nav-link" href="{% url 'itreporting:about' %}">About</a>
                         <a class="nav-item nav-link" href="{% url 'itreporting:contact' %}">Contact</a>
                         <a class="nav-item nav-link" href="{% url 'itreporting:module_list' %}">Module</a>
+                        <a class="nav-item nav-link" href="{% url 'itreporting:dashboard' %}">Dashboard</a>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                             {% if user.is_authenticated  %} 
                             <a class="nav-item nav-link" href="{% url 'users:student' %}">Profile</a>
-                            <a class="nav-item nav-link" href="{% url 'itreporting:issue-create' %}">Report Issue</a>
-                            <!--<a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a> -->
+                            <!--<a class="nav-item nav-link" href="{% url 'itreporting:issue-create' %}">Report Issue</a>
+                            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a> -->
                                 <form method="post" id="frm_logout" action="{% url 'logout' %}">
                                     {% csrf_token %}
                                     <a class="nav-item nav-link" href="javascript:$('#frm_logout').submit();">Logout</a> 
@@ -53,14 +54,14 @@
             </nav> 
         </header>
 
+        
+
 {% if messages %}
-    <div class="container mt-3">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-            </div>
-        {% endfor %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
     </div>
+  {% endfor %}
 {% endif %}
 
         <div class="row">

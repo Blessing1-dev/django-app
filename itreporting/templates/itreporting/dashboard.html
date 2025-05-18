@@ -1,0 +1,32 @@
+{% extends "itreporting/base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h1 class="mb-4">Project URL Dashboard</h1>
+  <ul class="list-group">
+
+    <li class="list-group-item"><a href="/">Home</a></li>
+    <li class="list-group-item"><a href="/about/">About</a></li>
+    <li class="list-group-item"><a href="/contact/">Contact</a></li>
+    <li class="list-group-item"><a href="/module/">Module List (Login Required)</a></li>
+    <li class="list-group-item"><a href="/register/1/">Register for Module 1</a></li>
+    <li class="list-group-item"><a href="/unregister/1/">Unregister from Module 1</a></li>
+    <li class="list-group-item"><a href="/module/1/edit/">Edit Module 1 (Staff Only)</a></li>
+    <li class="list-group-item"><a href="/module/1/delete/">Delete Module 1 (Staff Only)</a></li>
+
+    <hr>
+    <li class="list-group-item"><a href="/report/">All Issues</a></li>
+    <li class="list-group-item"><a href="/issue/">All Issues (Alias)</a></li>
+    <li class="list-group-item"><a href="/issue/new">Create New Issue</a></li>
+    <li class="list-group-item"><a href="/issue/1">View Issue 1</a></li>
+    <li class="list-group-item"><a href="/issue/1/update/">Update Issue 1</a></li>
+    <li class="list-group-item"><a href="/issue/1/delete/">Delete Issue 1</a></li>
+    <li class="list-group-item"><a href="/issue/johndoe">Issues by User blessing</a></li>
+
+    <hr>
+    <li class="list-group-item"><a href="/admin/">Admin Panel</a></li>
+    <li class="list-group-item"><a href="/login/">Login</a></li>
+    <li class="list-group-item"><a href="/logout/">Logout</a></li>
+
+  </ul>
+</div>
+{% endblock %}
