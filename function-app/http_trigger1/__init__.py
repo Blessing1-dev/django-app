@@ -26,7 +26,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         req_body = req.get_json()
         logging.info(f"Received request: {req_body}")
 
-        required_fields = ['email', 'student_name', 'module', 'action', 'date']
+        required_fields = ['email', 'student', 'module', 'action', 'date']  # ← Updated field
         for field in required_fields:
             if field not in req_body:
                 return func.HttpResponse(
@@ -36,7 +36,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 )
 
         student_email = req_body['email']
-        student_name = req_body['student_name']
+        student_name = req_body['student']  # ← Updated field
         module = req_body['module']
         action = req_body['action']
         date = req_body['date']
