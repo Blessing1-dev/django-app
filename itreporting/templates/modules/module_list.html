@@ -45,8 +45,9 @@
             <div class="col">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title">{{ module.name }} ({{ module.code }})</h5>
+                        <h5 class="card-title">{{ module.name }}</h5>
                         <p class="card-text">
+                            <strong>Code:</strong> {{ module.code}}<br>
                             <strong>Credits:</strong> {{ module.credit }}<br>
                             <strong>Description:</strong> {{ module.description }}<br>
                             <strong>Category:</strong> {{ module.category|capfirst }}<br>
@@ -59,16 +60,20 @@
                         {% endif %}
 
                         {% if not user.is_staff %}
-                            {% if module.id in registered_modules %}
-                                <form action="{% url 'itreporting:unregister_module' module.id %}" method="post" class="mt-2">
+                            {% if module.availability == 'open' %}
+                                {% if module.id in registered_modules %}
+                                    <form action="{% url 'itreporting:unregister_module' module.id %}" method="post" class="mt-2">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">Unregister</button>
-                                </form>
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Unregister</button>
+                                    </form>
+                                {% else %}
+                                    <form action="{% url 'itreporting:register_module' module.id %}" method="post" class="mt-2">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success btn-sm">Register</button>
+                                    </form>
+                                {% endif %}
                             {% else %}
-                                <form action="{% url 'itreporting:register_module' module.id %}" method="post" class="mt-2">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-success btn-sm">Register</button>
-                                </form>
+                                <button class="btn btn-secondary btn-sm mt-2" disabled>Registration Closed</button>
                             {% endif %}
                         {% endif %}
                     </div>

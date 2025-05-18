@@ -1,0 +1,4 @@
+To: admin@university.edu
+Subject: Student registered for Module 101
+
+Student John Doe (student@example.com) has just registered for Module 101.

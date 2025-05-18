@@ -1,0 +1,9 @@
+To: student@example.com
+Subject: You have successfully registered for Module 101
+
+Hi John Doe,
+
+You have successfully registered for Module 101 on 2025-05-17.
+
+Regards,
+University Team

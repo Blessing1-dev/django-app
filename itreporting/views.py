@@ -46,32 +46,28 @@ def contact(request):
 @login_required
 def module_list(request):
     query = request.GET.get('q')
-    print(query)
+
     try:
         student = request.user.student
-        print(student)
     except ObjectDoesNotExist:
         messages.error(request, "You need to complete your student profile first.")
-        return redirect('update_profile')  # Replace with your actual profile completion page
+        return redirect('update_profile')  
 
-    student = request.user.student
     registered_modules = Registration.objects.filter(student=student).values_list('module_id', flat=True)
     query = request.GET.get('q')
     category_type = request.GET.get('category_type')
     availability = request.GET.get('availability')
-        
-    registered_modules = Registration.objects.filter(student=student).values_list('module_id', flat=True)
     
     if request.user.is_staff:
         modules = Module.objects.all()
     else:
         modules = Module.objects.filter(courses_allowed__in=request.user.groups.all()).distinct()
     
-    print("DEBUG - Filtered modules for user:", modules)
-    
+     # Filter by category_type
     if category_type:
         modules = modules.filter(category=category_type)
-    
+
+     # Filter by availability
     if availability == "open":
         modules = modules.filter(availability='open')
     elif availability == "closed":
@@ -81,6 +77,8 @@ def module_list(request):
         modules = modules.filter(
              Q(name__icontains=query) | Q(code__icontains=query))
 
+    modules = modules.order_by('name')
+    
     # Pagination
     paginator = Paginator(modules, 6)  # 6 modules per page
     page_number = request.GET.get('page')
