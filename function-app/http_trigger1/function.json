@@ -12,7 +12,10 @@
       {
         "type": "http",
         "direction": "out",
-        "name": "$return"
+        "name": "$return",
+        "path": "emails/{rand-guid}.txt",
+        "connection": "AzureWebJobsStorage"
+
       }
     ]
   }
