@@ -23,7 +23,7 @@ def call_azure_function(request):
             'date': str(datetime.now().date())  # Include the current date
         }
         
-        azure_url = 'https://ardenthorizonuni.azurewebsites.net/api/http_trigger1?code=ymJzicNJp5oc_8Lr2FjPREm__-jD1b29hoG1d2vMwOuzAzFuEY-yvA=='
+        azure_url = ''
 
         try:
             response = requests.post(azure_url, json=payload)
@@ -105,7 +105,7 @@ def register_module(request, code):
             "date": str(datetime.now().date())
         }
         
-        azure_url = 'https://ardenthorizonuni.azurewebsites.net/api/http_trigger1?code=ymJzicNJp5oc_8Lr2FjPREm__-jD1b29hoG1d2vMwOuzAzFuEY-yvA=='
+        azure_url = ''
 
 
         try:
@@ -140,7 +140,7 @@ def unregister_module(request, code):
             'date': str(datetime.now().date())
         }
 
-        azure_url = 'https://ardenthorizonuni.azurewebsites.net/api/http_trigger1?code=ymJzicNJp5oc_8Lr2FjPREm__-jD1b29hoG1d2vMwOuzAzFuEY-yvA=='
+        azure_url = ''
 
 
         try:
