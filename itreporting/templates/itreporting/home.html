@@ -4,58 +4,17 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% block content %}
-<header>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:home' %}">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:module_list' %}">Module</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:about' %}">About Us</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:contact' %}">Contact</a></li>
-        </ul>
-    </div>
-</header>
-<div class="full-page-background" style="background: url('{% static 'images/study.jpeg' %}') no-repeat center center; background-size: cover; min-height: 100vh; position: relative;">
-    <section id="intro" class="w-100 py-5 text-center text-white" style="background: rgba(0,0,0,0.6);">
+
+<body>    
+    <section id="intro" class="w-100 py-5 text-center text-white">
         <div class="container">
             <h1 class="display-4 fw-bold">Welcome to Ardent Horizon University</h1>
             <p class="lead">Your gateway to quality education.</p>
-            <a href="#" class="btn btn-primary">Get Started</a>
+            <a href="{% url 'itreporting:about' %}" class="btn btn-primary">Get Started</a>
+
         </div>
     </section>
 
-    <section id="our-courses" class="container my-5">
-        <h2 class="text-center">Available Courses</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Computer Science</h5>
-                        <p class="card-text">Learn programming, AI, and web development.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Business Administration</h5>
-                        <p class="card-text">Learn management, entrepreneurship, and leadership skills.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Mechanical Engineering</h5>
-                        <p class="card-text">Explore engineering principles and technologies.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
 
 <section class="py-5">
     <div class="container text-center">
@@ -89,7 +48,7 @@
                     <img src="{% static 'images/work.jpeg' %}" alt="Computer Science">
                     <div class="card-body">
                         <h5 class="card-title">Computer Science</h5>
-                        <p>Advance your knowledge in programming, data science, and AI through innovative learning.</p>
+                        <p>Advance your knowledge in programming, web development, data science, and AI through innovative learning.</p>
                     </div>
                 </div>
             </div>
@@ -98,16 +57,16 @@
                     <img src="{% static 'images/cal.jpeg' %}" alt="Business">
                     <div class="card-body">
                         <h5 class="card-title">Business Administration</h5>
-                        <p>Master leadership, entrepreneurship, and corporate strategy with real-world case studies.</p>
+                        <p>Master leadership skills, entrepreneurship, learn management and corporate strategy with real-world case studies.</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card h-100 shadow border-0">
-                    <img src="{% static 'images/engineering.jpeg' %}" alt="Engineering">
+                    <img src="{% static 'images/engineering.jpeg' %}" alt="Engineering students working in lab">
                     <div class="card-body">
                         <h5 class="card-title">Engineering</h5>
-                        <p>Explore the future of design and manufacturing in our cutting-edge labs and workshops.</p>
+                        <p>Explore the future of design and manufacturing in our cutting-edge labs and workshops. Learn all about engineering principles and technologies</p>
                     </div>
                 </div>
             </div>
@@ -143,21 +102,6 @@
     </div>
 </section>
 
-<section class="bg-primary text-white py-5">
-    <div class="container text-center">
-        <h2>Stay Updated</h2>
-        <p>Subscribe to our newsletter for the latest events, programs, and news.</p>
-        <form class="row g-2 justify-content-center mt-3">
-            <div class="col-md-4">
-                <input type="email" class="form-control" placeholder="Enter your email">
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-light w-100" type="submit">Subscribe</button>
-            </div>
-        </form>
-    </div>
-</section>
-
 <section>
     <div class="content-section">
         <h3>General Information</h3>
@@ -172,23 +116,6 @@
 </section>
 {% endblock %}
 
-{% block sidebar %}
-<!-- Sidebar Section: Weather Information -->
-<div class="col-md-4">
-    <h3>Current Weather</h3>
-    <p class='text-muted'>Cities across the United Kingdom</p>
-    <ul class="list-group">
-        {% for weather in weather_data %}
-            <li class="list-group-item list-group-item-light">
-                <strong>{{ weather.city }}:</strong> {{ weather.description }}, {{ weather.temperature }}&deg;C
-            </li>
-        {% empty %}
-            <li class="list-group-item">No weather data available.</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endblock sidebar %}
-
 <footer class="bg-dark text-white text-center py-4">
     <div class="container">
         <p>&copy; 2025 Ardent Horizon University. All rights reserved.</p>
@@ -199,3 +126,4 @@
         </div>
     </div>
 </footer>
+</body>

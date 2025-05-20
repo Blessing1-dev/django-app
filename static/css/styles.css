@@ -1,7 +1,14 @@
 body {
-    background: #fafafa;
+    background: #dad3d3;
     color: #333333;
-    margin-top: 5rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -83,17 +90,10 @@ body {
     text-decoration: none;
   }
   
+  body {
+    margin-top: 0 !important;
+  }
   
-  .full-page-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-attachment: fixed; 
-    z-index: -1; 
-    overflow: hidden;
-}
+
 
   

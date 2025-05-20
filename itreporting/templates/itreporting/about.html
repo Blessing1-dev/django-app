@@ -3,16 +3,12 @@
 {% block title %}About us | Ardent Horizon University{% endblock %}
 {% block content %}
 
-<header >
+<header>
     <div class="container">
         <h1 class="display-4 fw-bold">About Ardent Horizon University</h1>
-        <p class="lead">Excellence in Education and Innovation Since 1978</p>
+        <p class="lead">We have been a future-forward institution focused on excellence in education and innovation since 1978</p>
+    </div>
 </header>
-
-<div class="full-page-background"
-    style="background: url('{% static 'images/background.jpeg' %}') no-repeat center center; >
-      background-size: cover; min-height: 100vh; position: relative;">
-</div>
 
 <section id="history" class="py-5 bg-light">
     <div class="container">
@@ -27,6 +23,22 @@
         </div>
     </div>
 </section>
+
+{% block sidebar %}
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Student Tools</h5>
+    <ul class="list-group">
+      <li class="list-group-item"><a href="{% url 'users:student' %}">My Profile</a></li>
+      <li class="list-group-item"><a href="{% url 'itreporting:dashboard' %}">My Dashboard</a></li>
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+<div class="full-page-background"
+    style="background: url('{% static 'images/background.jpeg' %}') no-repeat center center; >
+      background-size: cover; min-height: 100vh; position: relative;">
 </div>
 
 <section id="mission" class="py-5">

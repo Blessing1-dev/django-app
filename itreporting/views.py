@@ -10,6 +10,9 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.contrib import messages
 from decouple import config
+from azure.storage.blob import BlobServiceClient
+import uuid
+
 
 # Create your views here. 
 #This code will import the object HttpResponse which will use to render the views
@@ -48,13 +51,47 @@ def home(request):
     return render(request, 'itreporting/home.html', {'title': 'Homepage', 'weather_data': weather_data})
 
 def about(request):
-    return render(request, 'itreporting/about.html', {'title': 'About'})
+    import requests
+    url = 'https://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&appid={}'
+    cities = [('Sheffield', 'UK'), ('Derby', 'UK'), ('London', 'UK'), ('Valencia', 'Spain'), ('Melaka', 'Malaysia'), ('Bandung', 'Indonesia')]
+    weather_data = []
+    api_key = config('OPENWEATHER_API_KEY')
 
-def contact(request):
-    return render(request, 'itreporting/contact.html', {'title': 'Contact'})
+    for city in cities:
+        city_weather = requests.get(url.format(city[0], city[1], api_key)).json() # Request the API data and convert the JSON to Python data types
+    
+        if 'name' in city_weather and 'main' in city_weather and 'weather' in city_weather and 'sys' in city_weather:
+            weather = {
+                'city': city_weather['name'] + ', ' + city_weather['sys']['country'],
+                'temperature': city_weather['main']['temp'],
+                'description': city_weather['weather'][0]['description'],
+            }   
+            weather_data.append(weather) # Add the data for the current city into our list
+        else:
+            print(f"Error fetching data for {city}: {city_weather}")
+    return render(request, 'itreporting/about.html', {'title': 'About', 'weather_data': weather_data})
 
 @login_required
 def module_list(request):
+    import requests
+    url = 'https://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&appid={}'
+    cities = [('Sheffield', 'UK'), ('Derby', 'UK'), ('London', 'UK'), ('Valencia', 'Spain'), ('Melaka', 'Malaysia'), ('Bandung', 'Indonesia')]
+    weather_data = []
+    api_key = config('OPENWEATHER_API_KEY')
+
+    for city in cities:
+        city_weather = requests.get(url.format(city[0], city[1], api_key)).json() # Request the API data and convert the JSON to Python data types
+    
+        if 'name' in city_weather and 'main' in city_weather and 'weather' in city_weather and 'sys' in city_weather:
+            weather = {
+                'city': city_weather['name'] + ', ' + city_weather['sys']['country'],
+                'temperature': city_weather['main']['temp'],
+                'description': city_weather['weather'][0]['description'],
+            }   
+            weather_data.append(weather) # Add the data for the current city into our list
+        else:
+            print(f"Error fetching data for {city}: {city_weather}")
+
     query = request.GET.get('q')
 
     try:
@@ -115,6 +152,7 @@ def module_list(request):
         'availability': availability,
         'page_obj': page_obj,  # Use page_obj in template
         'registered_modules': registered_modules,
+        'weather_data': weather_data,
     }    
 
     return render(request, 'modules/module_list.html', context)
@@ -212,11 +250,57 @@ class ContactFormView(FormView):
     def get_context_data(self, **kwargs): 
         context = super(ContactFormView, self).get_context_data(**kwargs) 
         context.update({'title': 'Contact Us'}) 
+        
+        import requests
+        url = 'https://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&appid={}'
+        cities = [('Sheffield', 'UK'), ('Derby', 'UK'), ('London', 'UK'), ('Valencia', 'Spain'), ('Melaka', 'Malaysia'), ('Bandung', 'Indonesia')]
+        weather_data = []
+        api_key = config('OPENWEATHER_API_KEY')
+
+        for city in cities:
+            city_weather = requests.get(url.format(city[0], city[1], api_key)).json() # Request the API data and convert the JSON to Python data types
+    
+            if 'name' in city_weather and 'main' in city_weather and 'weather' in city_weather and 'sys' in city_weather:
+                weather = {
+                    'city': city_weather['name'] + ', ' + city_weather['sys']['country'],
+                    'temperature': city_weather['main']['temp'],
+                    'description': city_weather['weather'][0]['description'],
+                }   
+                weather_data.append(weather) # Add the data for the current city into our list
+        else:
+            print(f"Error fetching data for {city}: {city_weather}")
+        context['weather_data'] = weather_data
         return context
     
     def form_valid(self, form):
         form.send_mail()
-        messages.success(self.request, 'Your message was sent successfully!')
+        
+            # Getting form data to save to blob
+        name = form.cleaned_data.get('name')
+        email = form.cleaned_data.get('email')
+        subject = form.cleaned_data.get('subject')
+        message = form.cleaned_data.get('message')
+        
+        # Construct content
+        file_content = f"Name: {name}\nEmail: {email}\nSubject: {subject}\nMessage:\n{message}"
+
+        try:
+            # Set up Azure Blob Storage
+            connection_string = config('AZURE_BLOB_CONNECTION_STRING')
+            container_name = config('AZURE_BLOB_CONTAINER_NAME')
+            blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+
+            # Generating a unique file name
+            filename = f"contact_message_{uuid.uuid4()}.txt"
+            blob_client = blob_service_client.get_blob_client(container=container_name, blob=filename)
+
+            # Upload the file
+            blob_client.upload_blob(file_content, overwrite=True)
+
+            messages.success(self.request, 'Your message was sent successfully')
+        except Exception as e:
+            messages.warning(self.request, f"Message sent, but error saving to storage: {e}")
+
         return super().form_valid(form)
     
     def form_invalid(self, form): 
