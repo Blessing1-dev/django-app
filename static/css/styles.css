@@ -1,14 +1,8 @@
 body {
-    background: #dad3d3;
+    background: #ffffff;
     color: #333333;
     margin: 0;
     padding: 0;
-  }
-
-  html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -90,10 +84,15 @@ body {
     text-decoration: none;
   }
   
-  body {
-    margin-top: 0 !important;
+  .weather-widget {
+    z-index: 1040; /* above other content but below navbar */
+    max-width: 300px;
   }
   
-
-
+  @media (max-width: 768px) {
+    .weather-widget {
+      position: static;
+      margin: 1rem auto;
+    }
+  }
   
