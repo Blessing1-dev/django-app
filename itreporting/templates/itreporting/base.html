@@ -21,18 +21,19 @@
           <i class="bi bi-list" style="font-size: 1.5rem;"></i>
         </button>
 
-        <a class="navbar-brand fw-bold" href="{% url 'itreporting:home' %}">AHU University</a>
+        
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-  
+
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:about' %}">About</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:contact' %}">Contact</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'itreporting:module_list' %}">Modules</a></li>
+             <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'about' %}fw-bold{% endif %}" href="{% url 'itreporting:home' %}">AHU University</a></li>
+            <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'about' %}fw-bold{% endif %}" href="{% url 'itreporting:about' %}">About</a></li>
+            <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'contact' %}fw-bold{% endif %}" href="{% url 'itreporting:contact' %}">Contact</a></li>
+            <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'module_list' %}fw-bold{% endif %}" href="{% url 'itreporting:module_list' %}">Modules</a></li>
           </ul>
-  
+
           <ul class="navbar-nav">
             {% if user.is_authenticated %}
             <li class="nav-item"><a class="nav-link" href="{% url 'users:student' %}">Profile</a></li>
@@ -43,8 +44,8 @@
               </form>
             </li>
             {% else %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+            <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'about' %}fw-bold{% endif %}" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'about' %}fw-bold{% endif %}" href="{% url 'register' %}">Register</a></li>
             {% endif %}
           </ul>
         </div>

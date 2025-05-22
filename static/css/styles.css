@@ -20,6 +20,16 @@ body {
   .site-header .navbar-nav .nav-link {
     color: #cbd5db;
   }
+
+  .navbar-brand, .nav-link {
+  font-size: 1rem; /* or any preferred size */
+}
+
+.nav-link {
+  font-family: 'Arial', sans-serif; /* or your preferred font */
+  font-size: 1rem; /* ensures same size */
+}
+
   
   .site-header .navbar-nav .nav-link:hover {
     color: #ffffff;
@@ -30,7 +40,7 @@ body {
   }
   
   .content-section {
-    background: #ffffff;
+    background: #fcf7f7;
     padding: 10px 20px;
     border: 1px solid #dddddd;
     border-radius: 3px;
@@ -85,14 +95,21 @@ body {
   }
   
   .weather-widget {
-    z-index: 1040; /* above other content but below navbar */
+    z-index: 1000; /* above other content but below navbar */
     max-width: 300px;
   }
   
   @media (max-width: 768px) {
     .weather-widget {
-      position: static;
+      position: fixed;
       margin: 1rem auto;
     }
   }
-  
+
+.full-width-section {
+    /* Remove width: 100vw; */
+    padding: 0 1rem;
+    margin: 0;
+    box-sizing: border-box;
+}
+
