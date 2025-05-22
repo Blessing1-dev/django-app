@@ -45,13 +45,18 @@
             <div class="col">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title">{{ module.name }}</h5>
+                        <h5 class="card-title">
+                            <a href="{% url 'itreporting:module_detail' module.code %}">
+                                {{ module.name }}
+                            </a>
+                        </h5>
                         <p class="card-text">
                             <strong>Code:</strong> {{ module.code}}<br>
                             <strong>Credits:</strong> {{ module.credit }}<br>
                             <strong>Description:</strong> {{ module.description }}<br>
                             <strong>Category:</strong> {{ module.category|capfirst }}<br>
-                            <strong>Availability:</strong> {{ module.get_availability_display }}
+                            <strong>Availability:</strong> {{ module.get_availability_display }}<br>
+                            <strong>Course:</strong> {{ module.course}}
                         </p>
 
                         {% if user.is_staff %}

@@ -3,29 +3,29 @@
 {% block title %}About us | Ardent Horizon University{% endblock %}
 {% block content %}
 
-<header>
-    <div class="container">
-        <h1 class="display-4 fw-bold">About Ardent Horizon University</h1>
-        <p class="lead">We have been a future-forward institution focused on excellence in education and innovation since 1978</p>
+<div class="row justify-content-center">
+    <div class="col-md-10 text-center">
+        <h1 class="display-4 fw-bold">OUR HISTORY</h1>
     </div>
-</header>
+</div>
 
 <section id="history" class="py-5 bg-light">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10 text-center">
-                <h2 class="mb-4">Our History</h2>
+                
                 <p class="fs-5">
-                    Founded in 1978, <strong>Ardent Horizon University</strong> has grown into one of the UK's leading institutions, 
+                     <strong>Ardent Horizon University</strong> founded in 1978, has grown into one of the UK's leading institutions, 
                     recognized globally for its commitment to academic excellence, innovative research, and community impact.
                 </p>
+                <p class="lead">We have been a future-forward institution focused on excellence in education and innovation since 1978</p>
             </div>
         </div>
     </div>
 </section>
 
 <div class="full-page-background"
-    style="background: url('{% static 'images/background.jpeg' %}') no-repeat center center; >
+    style="background: url('{% static 'images/f.jpeg' %}') no-repeat center center; >
       background-size: cover; min-height: 100vh; position: relative;">
 </div>
 
@@ -33,7 +33,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6 mb-4 mb-md-0">
-                <img src="{% static 'images/tools.jpeg' %}" alt="Mission Vision" class="img-fluid rounded shadow">
+                <img src="{% static 'images/i.jpeg' %}" alt="Mission Vision" class="img-fluid rounded shadow">
             </div>
             <div class="col-md-6">
                 <h2 class="mb-3">Mission & Vision</h2>
@@ -47,11 +47,12 @@
 </section>
 
 <section id="facilities" class="py-5 bg-light">
-    <div class="container">
+    <div class="container my-5">
         <h2 class="text-center mb-5">Our Facilities</h2>
         <div class="row text-center">
             <div class="col-md-4 mb-4">
                 <div class="card shadow border-0 h-100">
+                    <img src="{% static 'images/a.jpeg' %}" class="card-img-top" alt="Library">
                     <div class="card-body">
                         <i class="bi bi-book-half display-4 text-primary"></i>
                         <h5 class="mt-3">Libraries</h5>
@@ -61,8 +62,9 @@
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card shadow border-0 h-100">
+                    <img src="{% static 'images/d.jpeg' %}" class="card-img-top" alt="Lab">
                     <div class="card-body">
-                        <i class="bi bi-flask display-4 text-success"></i>
+                        <i class="bi bi-book-half display-4 text-primary"></i>
                         <h5 class="mt-3">Laboratories</h5>
                         <p>State-of-the-art labs for hands-on learning and innovative experimentation.</p>
                     </div>
@@ -70,6 +72,7 @@
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card shadow border-0 h-100">
+                    <img src="{% static 'images/l.jpeg' %}" class="card-img-top" alt="recreational">
                     <div class="card-body">
                         <i class="bi bi-people display-4 text-warning"></i>
                         <h5 class="mt-3">Recreational Centres</h5>
@@ -81,11 +84,17 @@
     </div>
 </section>
 
+
+
 <section id="contact" class="bg-dark text-white py-5">
-    <div class="container text-center">
-        <h2 class="mb-3">Contact Us</h2>
-        <p class="fs-5 mb-1">Email: contact@ardenthorizonuniversity.edu</p>
-        <p class="fs-5">Phone: +447881155367</p>
-    </div>
+    <a href="{% url 'itreporting:contact' %}" class="text-white text-decoration-none">
+        <div class="container text-center"> 
+            <h2 class="mb-3"><a href="{% url 'itreporting:contact' %}" class="text-white text-decoration-none">Contact Us </a> </h2>
+            <p class="fs-5">Email: contact@ardenthorizonuniversity.edu</p>
+            <p class="fs-5">Phone: +447881155367</p>
+        </div>
+      
 </section>
+
+
 {% endblock %}

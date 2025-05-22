@@ -14,16 +14,11 @@ urlpatterns = [
     path('about/', views.about, name='about'),  #The about us page
     path('contact/', ContactFormView.as_view(), name='contact'),  #The contact us page
     path('module/', views.module_list, name='module_list'),
+    path('module/<str:code>/', views.module_detail, name='module_detail'),
+    path('course/<str:code>/', views.course_detail, name='course_detail'),
     path('module/<str:code>/edit/', views.edit_module, name='edit_module'),
     path('module/<str:code>/delete/', views.delete_module, name='delete_module'),
     path('register/<str:code>/', user_views.register_module, name='register_module'),
     path('unregister/<str:code>/', user_views.unregister_module, name='unregister_module'),
-    #path('report/', PostListView.as_view(), name='report'),
-    #path('issue/', PostListView.as_view(), name='issue-list'),
-    #path('issue/<int:pk>', PostDetailView.as_view(), name = 'issue-detail'),
-    #path('issue/new', PostCreateView.as_view(), name = 'issue-create'),
-    #path('issue/<int:pk>/update/', PostUpdateView.as_view(), name = 'issue-update'),
-    #path('issue/<int:pk>/delete/', PostDeleteView.as_view(), name = 'issue-delete'),
-    #path('issue/<str:username>', UserPostListView.as_view(), name = 'user-issues'),
 ]
 

@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
+from django.views.generic import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin 
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Issue, Module, Registration
+from .models import Course, Module, Registration
 from .forms import ContactForm, ModuleForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
@@ -19,9 +19,6 @@ import uuid
 #from django.http import HttpResponse           #As templates now manage responses, you can remove the from django.http import HttpResponse line in views.py.
 
 #define a function for the home view
-def dashboard_view(request):
-    return render(request, 'itreporting/dashboard.html')
-
 def restricted_view(request):
     if not request.user.is_authenticated or not request.user.groups.filter(name='Students').exists():
         messages.warning(request, "You are not authorized to access that page.")
@@ -70,6 +67,22 @@ def about(request):
         else:
             print(f"Error fetching data for {city}: {city_weather}")
     return render(request, 'itreporting/about.html', {'title': 'About', 'weather_data': weather_data})
+
+@login_required
+def course_detail(request, code):
+    course = get_object_or_404(Course, code=code)
+    modules = course.modules.all()  # Related name on FK
+    return render(request, 'modules/course_detail.html', {
+        'course': course, 'modules': modules
+    })
+
+@login_required
+def module_detail(request, code):
+    module = get_object_or_404(Module, code=code)
+    return render(request, 'modules/module_detail.html', {
+        'module': module
+    })
+
 
 @login_required
 def module_list(request):
@@ -184,64 +197,6 @@ def delete_module(request, code):
         return redirect('itreporting:module_list')
     return render(request, 'modules/confirm_delete.html', {'module': module})
 
-
-def report(request):
-   
-    daily_report = {'issues': Issue.objects.all(), 'title': 'Issues Reported'}
-    return render(request, 'itreporting/report.html', daily_report)
-    
-class PostListView(ListView):
-    model = Issue
-    ordering = ['-date_submitted']
-    template_name = 'itreporting/report.html'
-    context_object_name = 'issues'
-    paginate_by = 5  # Optional pagination
-
-class UserPostListView(ListView): 
-    model = Issue
-    template_name = 'itreporting/user_issues.html' 
-    context_object_name = 'issues'
-    paginate_by = 5
-
-
-    def get_queryset(self):
-
-        user=get_object_or_404(User, username=self.kwargs.get('username'))
-
-        return Issue.objects.filter(author=user).order_by('-date_submitted')
-    
-class PostDetailView(DetailView):
-    model = Issue
-    template_name = 'itreporting/issue_detail.html'
-
-class PostCreateView(LoginRequiredMixin, CreateView):
-    model = Issue
-    fields = ['type', 'room', 'urgent', 'details']
-
-    def form_valid(self, form): 
-
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView): 
-    model = Issue
-    fields = ['type', 'room', 'details']
-    
-    def test_func(self):
-
-        issue = self.get_object()
-
-        return self.request.user == issue.author
-
-class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-
-    model = Issue
-    success_url = '/report'
-    
-    def test_func(self):
-        issue = self.get_object()
-        return self.request.user == issue.author
-
 class ContactFormView(FormView):
     template_name = 'itreporting/contact.html'
     form_class = ContactForm
@@ -307,5 +262,5 @@ class ContactFormView(FormView):
         messages.warning(self.request, 'Unable to send the enquiry') 
         return super().form_invalid(form)
     
-    def get_success_url(self): 
-        return self.request.path
+    def get_success_url(self):
+        return self.success_url

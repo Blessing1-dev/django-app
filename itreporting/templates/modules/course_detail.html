@@ -1,0 +1,17 @@
+{% extends 'itreporting/base.html' %}
+{% block title %}{{ course.name }} | Course Info{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ course.name }} ({{ course.code }})</h2>
+    <p>{{ course.description }}</p>
+    <hr>
+    <h3>Modules for this course:</h3>
+    <ul>
+        {% for module in modules %}
+            <li><a href="{% url 'itreporting:module_detail' module.pk %}">{{ module.name }} ({{ module.code }})</a></li>
+        {% empty %}
+            <li>No modules for this course yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

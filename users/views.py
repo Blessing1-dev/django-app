@@ -87,16 +87,17 @@ def register(request):
 
 logger = logging.getLogger(__name__)
 
+
 @login_required
 def register_module(request, code):
     student = request.user.student
-    module = get_object_or_404(Module,code=code)
+    module = get_object_or_404(Module, code=code)
     
     if not Registration.objects.filter(student=student, module=module).exists():
         Registration.objects.create(student=student, module=module)
         messages.success(request, f'You have successfully registered for the {module.name} module.')
 
-        #Call Azure Function after successful registration
+        # Call Azure Function after successful registration
         payload = {
             'student': request.user.username,
             'module': module.name,
@@ -107,17 +108,16 @@ def register_module(request, code):
         
         azure_url = ''
 
-
         try:
             response = requests.post(azure_url, json=payload)
-            response.raise_for_status()  # Raise an exception for HTTP errors
+            response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            messages.error(request, f"Error calling Azure Function: {str(e)}")
+            # Don't show error on frontend, just log it
+            logger.error(f"Error calling Azure Function (register_module): {str(e)}")
 
     else:
         messages.error(request, f'You are already registered for the {module.name} module.')
 
-    
     return redirect('itreporting:module_list')
 
 
@@ -142,19 +142,19 @@ def unregister_module(request, code):
 
         azure_url = ''
 
-
         try:
             response = requests.post(azure_url, json=payload)
             response.raise_for_status()
-            print(f"Azure Function response: {response.status_code} - {response.text}")
+            # Remove print debug statement here
+            # print(f"Azure Function response: {response.status_code} - {response.text}")
         except requests.exceptions.RequestException as e:
-            messages.error(request, f"Error calling Azure Function: {str(e)}")
+            # Don't show error on frontend, just log it
+            logger.error(f"Error calling Azure Function (unregister_module): {str(e)}")
 
     else:
         messages.error(request, f'You are not registered for the {module.name} module.')
 
     return redirect('itreporting:module_list')
-
 
 @login_required
 def student_profile(request):

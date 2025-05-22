@@ -36,30 +36,60 @@
     <a href="{% url 'users:update_profile' %}" class="btn btn-outline-primary mt-3">Edit Profile</a>
   </div>
 
-  <h2>Your Current Module Registrations:</h2>
-  <ul>
-    {% for registration in registrations %}
-      <li>{{ registration.module.name }} -
-          Registered on: {{ registration.registration_date }} -
-          <a href="{% url 'itreporting:unregister_module' registration.module.id %}">Unregister</a>
-      </li>
-    {% empty %}
-      <li>You have no current registrations.</li>
-    {% endfor %}
-  </ul>
+<div class="container my-5">
+  <!-- Registered Modules Section -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <h2 class="mb-4 text-primary">Your Current Module Registrations</h2>
+      {% if registrations %}
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          {% for registration in registrations %}
+            <div class="col">
+              <div class="card shadow-sm h-100 border-success">
+                <div class="card-body">
+                  <h5 class="card-title">{{ registration.module.name }}</h5>
+                  <p class="card-text">
+                    Registered on: <strong>{{ registration.registration_date }}</strong>
+                  </p>
+                  <a href="{% url 'itreporting:unregister_module' registration.module.id %}" class="btn btn-outline-danger">
+                    Unregister
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted">You have no current registrations.</p>
+      {% endif %}
+    </div>
+  </div>
 
-  <h2>Modules Available for Registration:</h2>
-  <ul>
-    {% if available_modules %}
-      {% for module in available_modules %}
-        <li>{{ module.name }} -
-            <a href="{% url 'itreporting:register_module' module.id %}">Register</a>
-        </li>
-      {% endfor %}
-    {% else %}
-      <li>No available modules to register for.</li>
-    {% endif %}
-  </ul>
+  <!-- Available Modules Section -->
+  <div class="row">
+    <div class="col-12">
+      <h2 class="mb-4 text-success">Modules Available for Registration</h2>
+      {% if available_modules %}
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          {% for module in available_modules %}
+            <div class="col">
+              <div class="card shadow-sm h-100">
+                <div class="card-body">
+                  <h5 class="card-title">{{ module.name }}</h5>
+                  <a href="{% url 'itreporting:register_module' module.id %}" class="btn btn-primary">
+                    Register
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted">No available modules to register for.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
 
 {% endif %}
 

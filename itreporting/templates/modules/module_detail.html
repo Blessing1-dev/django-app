@@ -1,0 +1,78 @@
+{% extends 'itreporting/base.html' %}
+{% block title %}{{ module.name }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+  <a href="{% url 'itreporting:module_list' %}{% if request.GET.course %}?course={{ request.GET.course }}{% endif %}" class="text-primary text-decoration-none d-flex align-items-center">
+    <svg class="bi bi-arrow-left-short me-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+      <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5A.5.5 0 0 1 12 8z"/>
+    </svg>
+    Back to Modules
+  </a>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h1 class="h4 mb-0">{{ module.name }}</h1>
+    {% if module.availability == 'open' %}
+      <span class="badge bg-success text-uppercase">{{ module.availability }}</span>
+    {% else %}
+      <span class="badge bg-danger text-uppercase">{{ module.availability }}</span>
+    {% endif %}
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <h5>Module Details</h5>
+        <ul class="list-unstyled">
+          <li><strong>Credits:</strong> {{ module.credit }}</li>
+          <li><strong>Category:</strong> {{ module.category }}</li>
+          <li>
+            <strong>Available for:</strong>
+            {% for course in module.allowed_courses.all %}
+              <span class="badge bg-secondary me-1">{{ course.code }}</span>
+            {% endfor %}
+          </li>
+        </ul>
+        <h5>Description</h5>
+        <p>{{ module.description }}</p>
+      </div>
+      <div class="col-md-6">
+        <h5>Registration</h5>
+        {% if user.is_authenticated %}
+          {% if module.availability == 'open' %}
+            {% if is_registered %}
+              <div class="alert alert-success">
+                You are registered for this module.<br>
+                Registration Date: {{ registration.registration_date }}
+              </div>
+              <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="unregister">
+                <button type="submit" class="btn btn-danger w-100">Cancel Registration</button>
+              </form>
+            {% else %}
+              {% if can_register %}
+                <p>This module is currently open for registration.</p>
+                <form method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="action" value="register">
+                  <button type="submit" class="btn btn-primary w-100">Register for this Module</button>
+                </form>
+              {% else %}
+                <div class="alert alert-warning">
+                  Your course {% if student.course %}({{ student.course.code }}){% endif %} is not eligible for this module.
+                </div>
+              {% endif %}
+            {% endif %}
+          {% else %}
+            <div class="alert alert-danger">This module is currently closed for registration.</div>
+          {% endif %}
+        {% else %}
+          <p>You need to <a href="{% url 'login' %}?next={{ request.path }}">log in</a> to register for this module.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
