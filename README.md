@@ -40,15 +40,7 @@ As part of a 4-member team, my main contributions were:
 - Implementing the **Student model** (profile linked to Django’s User model)  
 - Building the **student profile page** and edit functionality  
 - Integrating user authentication (login/logout, registration)  
-- Managing the **main branch on GitHub** and merging feature branches  
-
----
-
-## 📸 Screenshots  
-*(Add screenshots here if available)*  
-Example:  
-![Homepage](link-to-homepage-image)  
-![Module Registration](link-to-module-image)  
+- Managing the **main branch on GitHub** and merging feature branches    
 
 ---
 
@@ -64,4 +56,18 @@ This project was developed collaboratively with 3 teammates.
 Each team member managed their own branch, and I oversaw integration into the **main branch**.  
 
 ---
+
+## 📸 Screenshots  
+**Homepage:**   
+![Homepage](static/image/aboutahu.PNG) 
+**Module registration:**
+![Module reg](static/image/module.PNG)
+**Module details:**
+![Module](static/image/course.PNG)
+
+---
+
+## 🔗 Related Projects  
+- Lily Beauty Bar – Personal Project: https://github.com/blessing267/lilybeautybar.git
+- FarmMarket – MSc Dissertation Project: https://github.com/blessing267/repo.git  
 
