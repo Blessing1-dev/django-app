@@ -1,6 +1,7 @@
 # 🎓 Ardent Horizon University (AHU) – Student Portal  
 
 **Link:** https://ardenthorizonuniversity-ehhscbggc0b0gzhm.uksouth-01.azurewebsites.net/
+
 **GitHub Repo:** https://github.com/Blessing1-dev/django-app.git  
 
 ---
@@ -61,8 +62,10 @@ Each team member managed their own branch, and I oversaw integration into the **
 ## 📸 Screenshots  
 **Homepage:**   
 ![Homepage](static/images/aboutahu.PNG) 
+
 **Module registration:**
 ![Module reg](static/images/module.PNG)
+
 **Module details:**
 ![Module](static/images/course.PNG)
 
