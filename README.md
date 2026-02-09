@@ -73,5 +73,5 @@ Each team member managed their own branch, and I oversaw integration into the **
 
 ## 🔗 Related Projects  
 - Lily Beauty Bar – Personal Project: https://github.com/blessing267/lilybeautybar.git
-- FarmMarket – MSc Dissertation Project: https://github.com/blessing267/repo.git  
+- FarmMarket – Personal Project: https://github.com/blessing267/repo.git  
 
