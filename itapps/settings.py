@@ -16,7 +16,6 @@ from decouple import config
 from dotenv import load_dotenv
 
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 dotenv_path = os.path.join(BASE_DIR, 'utility', '.env')
@@ -29,31 +28,23 @@ load_dotenv(dotenv_path)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
-WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME', None) 
-DEBUG = WEBSITE_HOSTNAME is None 
-# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config(
+    'DEBUG',
+    default=True,
+    cast=bool
+)
 
-if DEBUG: 
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS',
+    default='localhost,127.0.0.1'
+).split(',')
 
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1'] 
-
-else: 
-    if WEBSITE_HOSTNAME:
-        ALLOWED_HOSTS = [WEBSITE_HOSTNAME, f"{WEBSITE_HOSTNAME}.azurewebsites.net"]
-    else:
-        ALLOWED_HOSTS = []
-        
-if not DEBUG and WEBSITE_HOSTNAME: 
-
-    CSRF_TRUSTED_ORIGINS = [
-        f'https://{WEBSITE_HOSTNAME}',
-        f'https://{WEBSITE_HOSTNAME}.azurewebsites.net'
-    ] 
-
-
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS',
+    default='http://localhost,http://127.0.0.1'
+).split(',')
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -120,24 +111,11 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = { 
-
-    'default': { 
-
-        'ENGINE': 'django.db.backends.mysql', 
-
-        'NAME': os.getenv('AZURE_DB_NAME'), 
-
-        'HOST': os.getenv('AZURE_DB_HOST'), 
-
-        'PORT': os.getenv('AZURE_DB_PORT'), 
-
-        'USER': os.getenv('AZURE_DB_USER'), 
-
-        'PASSWORD': os.getenv('AZURE_DB_PASSWORD'), 
-
-    } 
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 } 
 
 # Password validation
@@ -174,46 +152,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-# STATIC_URL = 'static/'
-# MEDIA_ROOT = BASE_DIR / 'media'
-# MEDIA_URL = '/media/'
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    BASE_DIR / 'static'
 ]
 
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Additional locations for static files (do NOT include STATIC_ROOT here)
-
-
-AZURE_SA_NAME = os.getenv('AZURE_SA_NAME')
-AZURE_SA_KEY = os.getenv('AZURE_SA_KEY')
-
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.azure_storage.AzureStorage",
-        "OPTIONS": {
-            "account_name": AZURE_SA_NAME,
-            "account_key": AZURE_SA_KEY,
-            "azure_container": "media",
-        },
-    },
-    "staticfiles": {
-        "BACKEND": "storages.backends.azure_storage.AzureStorage",
-        "OPTIONS": {
-            "account_name": AZURE_SA_NAME,
-            "account_key": AZURE_SA_KEY,
-            "azure_container": "static",
-        },
-    },
-}
-
-STATIC_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/static/'
-
-MEDIA_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/media/' 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Directory where static files will be collected during deployment
 
