@@ -4,140 +4,529 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>{% block title %}ARDENT HORIZON UNIVERSITY{% endblock %}</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  >
+
+  <title>
+    {% block title %}
+      ARDENT HORIZON UNIVERSITY
+    {% endblock %}
+  </title>
 
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- Bootstrap Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    rel="stylesheet"
+  >
+
+  <!-- Your existing stylesheet -->
+  <link
+    rel="stylesheet"
+    href="{% static 'css/styles.css' %}"
+  >
+
+  <style>
+    /* ------------------------------
+       Navbar
+    ------------------------------ */
+    .ahu-navbar {
+      background: linear-gradient(
+        135deg,
+        #0d47a1,
+        #1565c0
+      );
+    }
+
+    .ahu-navbar .navbar-brand {
+      color: #ffffff;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .ahu-navbar .navbar-brand:hover {
+      color: #ffffff;
+    }
+
+    .ahu-navbar .nav-link {
+      color: rgba(255, 255, 255, 0.88);
+      font-weight: 500;
+      padding: 0.55rem 0.85rem;
+      border-radius: 0.4rem;
+      transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+    }
+
+    .ahu-navbar .nav-link:hover,
+    .ahu-navbar .nav-link:focus {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .ahu-navbar .nav-link.active {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.18);
+      font-weight: 700;
+    }
+
+    .ahu-navbar .navbar-toggler {
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: none;
+    }
+
+    .ahu-navbar .navbar-toggler:focus {
+      box-shadow: 0 0 0 0.15rem rgba(255, 255, 255, 0.25);
+    }
+
+    /* Center main navigation on laptop/desktop */
+    @media (min-width: 992px) {
+      .ahu-navbar .container-fluid {
+        position: relative;
+      }
+
+      .desktop-main-nav {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      /* Keep login/register on the right */
+      #mainNavbar > .navbar-nav:last-child {
+        margin-left: auto;
+      }
+    }
+
+    /* Mobile menu */
+
+    @media (max-width: 991.98px) {
+      .ahu-navbar .navbar-collapse {
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+      }
+
+      .ahu-navbar .nav-link {
+        padding: 0.7rem 0.8rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .ahu-navbar .navbar-nav + .navbar-nav {
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.18);
+      }
+    }
+
+    /* ------------------------------
+       General
+    ------------------------------ */
+
+    body {
+      background-color: #f8f9fa;
+    }
+
+    /* ==============================
+      AHU LOGO
+    ============================== */
+
+    /* Mobile */
+    .mobile-logo {
+      width: 105px;
+      height: 55px;
+      object-fit: contain;
+      object-position: left center;
+      display: block;
+    }
+
+    /* Laptop / Desktop */
+    .desktop-logo {
+      width: 180px;
+      height: 65px;
+      object-fit: contain;
+      object-position: left center;
+      display: block;
+    }
+
+    /* Smaller phones */
+    @media (max-width: 575.98px) {
+      .mobile-logo {
+        width: 95px;
+        height: 52px;
+      }
+    }
+
+    /* Mobile links visible before opening menu */
+    .mobile-quick-links {
+      min-width: 0;
+    }
+
+    .mobile-quick-link {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.4rem 0.55rem;
+      border-radius: 0.4rem;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .mobile-quick-link:hover,
+    .mobile-quick-link.active {
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    @media (max-width: 575.98px) {
+      .mobile-quick-link {
+        font-size: 0.88rem;
+        padding-left: 0.35rem;
+        padding-right: 0.35rem;
+      }
+    }
+
+    main {
+      min-height: 60vh;
+    }
+
+    .weather-section {
+      background: #f6f8fb;
+      border-top: 1px solid #e8edf3;
+      border-bottom: 1px solid #e8edf3;
+    }
+
+    .weather-city {
+      background: #ffffff;
+      border: 1px solid #e5eaf0;
+      border-radius: 0.75rem;
+      padding: 1rem;
+    }
+
+    .weather-temperature {
+      color: #0d47a1;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .site-footer {
+      background: #0d47a1;
+    }
+  </style>
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light text-dark">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3 shadow-sm sticky-top">
-      <div class="container">
+<body class="d-flex flex-column min-vh-100 text-dark">
 
-        <button class="btn btn-outline-light me-3" id="btn-back" title="Go back">
-          <i class="bi bi-arrow-left"></i>
-        </button>
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
 
-        <!-- Hamburger Button -->
-        <button class="btn text-white border-0 me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#dashboardSidebar" aria-controls="dashboardSidebar" aria-label="Toggle dashboard sidebar">
-          <i class="bi bi-list" style="font-size: 1.5rem;"></i>
-        </button>
-        
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <nav class="navbar navbar-expand-lg navbar-dark ahu-navbar py-2 shadow-sm sticky-top">
+    <div class="container-fluid px-3 px-lg-4">
+  
+      <!-- =========================
+           MOBILE TOP ROW
+      ========================== -->
+      <div class="d-flex d-lg-none align-items-center w-100">
+  
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center p-0 me-3" href="{% url 'itreporting:home' %}">
+          <img src="{% static 'images/ahulogo.png' %}" alt="Ardent Horizon University" class="mobile-logo">
+        </a>
+  
+        <!-- Mobile quick links -->
+        <div class="mobile-quick-links flex-grow-1 d-flex justify-content-center align-items-center gap-3">
+  
+          <a class="mobile-quick-link
+              {% if request.resolver_match.url_name == 'home' %}
+                active
+              {% endif %}
+            " href="{% url 'itreporting:home' %}">
+            Home
+          </a>
+
+          <a class="mobile-quick-link
+              {% if request.resolver_match.url_name == 'about' %}
+                active
+              {% endif %}
+            " href="{% url 'itreporting:about' %}">
+            About Us
+          </a>
+  
+          <a class="mobile-quick-link
+              {% if request.resolver_match.url_name == 'module_list' %}
+                active
+              {% endif %}
+            " href="{% url 'itreporting:module_list' %}">
+            Modules
+          </a>
+  
+        </div>
+  
+        <!-- Hamburger -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-             <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'about' %}fw-bold{% endif %}" href="{% url 'itreporting:home' %}">AHU University</a></li>
-            <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'about' %}fw-bold{% endif %}" href="{% url 'itreporting:about' %}">About</a></li>
-            <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'contact' %}fw-bold{% endif %}" href="{% url 'itreporting:contact' %}">Contact</a></li>
-            <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'module_list' %}fw-bold{% endif %}" href="{% url 'itreporting:module_list' %}">Modules</a></li>
-          </ul>
-
-          <ul class="navbar-nav">
-            {% if user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'users:student' %}">Profile</a></li>
-            <li class="nav-item">
-              <form method="post" id="frm_logout" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <a class="nav-link" href="javascript:document.getElementById('frm_logout').submit();">Logout</a>
-              </form>
-            </li>
-            {% else %}
-            <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'about' %}fw-bold{% endif %}" href="{% url 'login' %}">Login</a></li>
-            <li class="nav-item"><a class="nav-link fw-normal {% if request.resolver_match.url_name == 'about' %}fw-bold{% endif %}" href="{% url 'register' %}">Register</a></li>
-            {% endif %}
-          </ul>
-        </div>
+  
       </div>
-    </nav>
-
-  <!-- Alerts -->
-  <div class="container mt-4">
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      {% endfor %}
-    {% endif %}
-  </div>
-
-  <!-- Main Content -->
-  <main class="container my-3 flex-grow-1">
-    <div class="row">
-      <div class="col-lg-8 mb-4">
-        {% block content %}{% endblock %}
+  
+  
+      <!-- =========================
+           DESKTOP LOGO
+      ========================== -->
+      <a class="navbar-brand d-none d-lg-flex align-items-center me-4" href="{% url 'itreporting:home' %}">
+        <img src="{% static 'images/ahulogo.png' %}" alt="Ardent Horizon University" class="desktop-logo">
+      </a>
+  
+  
+      <!-- =========================
+           COLLAPSIBLE NAVIGATION
+      ========================== -->
+      <div class="collapse navbar-collapse" id="mainNavbar">
+  
+        <ul class="navbar-nav desktop-main-nav mb-2 mb-lg-0">
+  
+          <li class="nav-item">
+            <a class="nav-link
+                {% if request.resolver_match.url_name == 'home' %}
+                  active
+                {% endif %}
+              " href="{% url 'itreporting:home' %}">
+              <i class="bi bi-house-door me-1"></i>
+              Home
+            </a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link
+                {% if request.resolver_match.url_name == 'about' %}
+                  active
+                {% endif %}
+              " href="{% url 'itreporting:about' %}">
+              <i class="bi bi-info-circle me-1"></i>
+              About Us
+            </a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link
+                {% if request.resolver_match.url_name == 'contact' %}
+                  active
+                {% endif %}
+              " href="{% url 'itreporting:contact' %}">
+              <i class="bi bi-envelope me-1"></i>
+              Contact Us
+            </a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link
+                {% if request.resolver_match.url_name == 'module_list' %}
+                  active
+                {% endif %}
+              " href="{% url 'itreporting:module_list' %}">
+              <i class="bi bi-journal-bookmark me-1"></i>
+              Modules
+            </a>
+          </li>
+  
+        </ul>
+  
+  
+        <!-- Authentication -->
+        <ul class="navbar-nav">
+  
+          {% if user.is_authenticated %}
+  
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:student' %}">
+              <i class="bi bi-person-circle me-1"></i>
+              Profile
+            </a>
+          </li>
+  
+          <li class="nav-item">
+            <form method="post" action="{% url 'logout' %}" class="m-0">
+              {% csrf_token %}
+  
+              <button type="submit" class="nav-link border-0 bg-transparent w-100 text-start">
+                <i class="bi bi-box-arrow-right me-1"></i>
+                Logout
+              </button>
+            </form>
+          </li>
+  
+          {% else %}
+  
+          <li class="nav-item">
+            <a class="nav-link
+                  {% if request.resolver_match.url_name == 'login' %}
+                    active
+                  {% endif %}
+                " href="{% url 'login' %}">
+              <i class="bi bi-box-arrow-in-right me-1"></i>
+              Login
+            </a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link
+                  {% if request.resolver_match.url_name == 'register' %}
+                    active
+                  {% endif %}
+                " href="{% url 'register' %}">
+              <i class="bi bi-person-plus me-1"></i>
+              Register
+            </a>
+          </li>
+  
+          {% endif %}
+  
+        </ul>
+  
       </div>
-      
-      <div class="col-lg-4">
-        <!-- Weather Sidebar -->
-        <div class="container mt-3">
-        {% if request.resolver_match.view_name in 'itreporting:home itreporting:about itreporting:module_list' %}
-            <div class="weather-widget">
-              <div class="d-flex">
-                <div class="card mb-4 weather-widget" style="min-width: 250px;">
-                  <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Current Weather</h5>
-                  </div>
-                  <ul class="list-group list-group-flush">
-                    {% for weather in weather_data %}
-                      <li class="list-group-item">
-                        <strong>{{ weather.city }}:</strong> {{ weather.description }}, {{ weather.temperature }}&deg;C
-                      </li>
-                    {% empty %}
-                      <li class="list-group-item">No weather data available.</li>
-                    {% endfor %}
-                  </ul>
-                </div>
-              </div>  
-            </div>
-        {% endif %}
-        {% block sidebar %}{% endblock %}
-      </div>
+  
     </div>
+  </nav>
+
+
+  <!-- =========================
+       DJANGO MESSAGES
+  ========================== -->
+
+  {% if messages %}
+    <div class="container mt-4">
+
+      {% for message in messages %}
+
+        <div
+          class="alert alert-{{ message.tags }} alert-dismissible fade show"
+          role="alert"
+        >
+          {{ message }}
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+
+      {% endfor %}
+
+    </div>
+  {% endif %}
+
+
+  <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+  <main class="flex-grow-1">
+  
+    <!-- Page content -->
+    <div class="container my-4">
+      {% block content %}{% endblock %}
+    </div>
+  
+    <!-- Weather -->
+    {% if request.resolver_match.view_name in 'itreporting:home itreporting:about itreporting:module_list' %}
+    <section class="weather-section py-4">
+      <div class="container">
+  
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <i class="bi bi-cloud-sun text-primary fs-5"></i>
+          <h5 class="mb-0 fw-semibold">Current Weather</h5>
+        </div>
+  
+        <div class="row g-2">
+  
+          {% for weather in weather_data %}
+  
+          <div class="col-6 col-md-4 col-lg-2">
+  
+            <div class="weather-city h-100">
+  
+              <div class="fw-semibold">
+                {{ weather.city }}
+              </div>
+  
+              <div class="small text-muted mt-1">
+                {{ weather.description }}
+              </div>
+  
+              <div class="weather-temperature mt-2">
+                {{ weather.temperature }}&deg;C
+              </div>
+  
+            </div>
+  
+          </div>
+  
+          {% empty %}
+  
+          <div class="col-12">
+            <p class="text-muted mb-0">
+              No weather data available.
+            </p>
+          </div>
+  
+          {% endfor %}
+  
+        </div>
+  
+      </div>
+    </section>
+    {% endif %}
+  
+    {% block sidebar %}{% endblock %}
+  
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-primary text-white py-4 mt-5">
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer class="site-footer text-white py-4 mt-auto">
+
     <div class="container text-center">
-      <p class="mb-0">&copy; 2025 Ardent Horizon University. All rights reserved.</p>
+
+      <p class="mb-0">
+        &copy; 2025 Ardent Horizon University.
+        All rights reserved.
+      </p>
+
     </div>
+
   </footer>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Bootstrap JavaScript -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  ></script>
+
+
+  <!-- Safe back-button handling -->
   <script>
-  document.getElementById('btn-back').onclick = function() {
-    window.history.back();
-  };
-</script>
+    const backButton = document.getElementById("btn-back");
+
+    if (backButton) {
+      backButton.addEventListener("click", function () {
+        window.history.back();
+      });
+    }
+  </script>
+
 </body>
-
-<!-- Dashboard Sidebar -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="dashboardSidebar" aria-labelledby="dashboardLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="dashboardLabel">Dashboard</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <ul class="list-group">
-      <li class="list-group-item"><a href="/">Home</a></li>
-      <li class="list-group-item"><a href="/about/">About</a></li>
-      <li class="list-group-item"><a href="/contact/">Contact</a></li>
-      <li class="list-group-item"><a href="/module/">Modules</a></li>
-      <li class="list-group-item"><a href="/users/student/">Profile</a></li>
-      <li class="list-group-item"><a href="/users/student/update/">Update Profile</a></li>
-      <li class="list-group-item"><a href="/login/">Login</a></li>
-      <li class="list-group-item"><a href="/logout/">Logout</a></li>
-    </ul>
-  </div>
-</div>
-
 </html>
-

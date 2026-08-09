@@ -1,13 +1,114 @@
-{% extends "itreporting/base.html" %} 
-{% block title %}Logout | Ardent Horizon University{% endblock %}
-{% block content %} 
+{% extends "itreporting/base.html" %}
 
-    <h2>You have now been logged out</h2> 
+{% block title %}Logged Out | Ardent Horizon University{% endblock %}
 
-        <div class="border-top pt-3"> 
+{% block content %}
 
-            <small class="text-muted"><a class="ml-2" href="{% url 'login' %}">Login</a></small> 
+<style>
+  .logout-page {
+    min-height: 55vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+  }
 
-        </div> 
+  .logout-card {
+    width: 100%;
+    max-width: 520px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #e5e9ef;
+    border-radius: 1rem;
+    padding: 3rem 2rem;
+    box-shadow: 0 0.5rem 1.8rem rgba(0, 0, 0, 0.06);
+  }
+
+  .logout-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eef4fb;
+    color: #1565c0;
+    font-size: 1.7rem;
+  }
+
+  .logout-card h1 {
+    color: #202938;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .logout-card p {
+    color: #667085;
+    margin-bottom: 1.75rem;
+  }
+
+  .login-again-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    background: #1565c0;
+    color: #ffffff;
+    border-radius: 0.55rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+
+  .login-again-btn:hover {
+    background: #0d47a1;
+    color: #ffffff;
+  }
+
+  @media (max-width: 575.98px) {
+    .logout-page {
+      min-height: 50vh;
+      padding: 2rem 0.5rem;
+    }
+
+    .logout-card {
+      padding: 2.25rem 1.25rem;
+    }
+
+    .logout-card h1 {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+
+<section class="logout-page">
+
+  <div class="logout-card">
+
+    <div class="logout-icon">
+      <i class="bi bi-check-lg"></i>
+    </div>
+
+    <h1>You've been logged out</h1>
+
+    <p>
+      Your session has ended successfully.
+      You can sign in again whenever you're ready.
+    </p>
+
+    <a
+      href="{% url 'login' %}"
+      class="login-again-btn"
+    >
+      <i class="bi bi-box-arrow-in-right"></i>
+      Log In Again
+    </a>
+
+  </div>
+
+</section>
 
 {% endblock content %}

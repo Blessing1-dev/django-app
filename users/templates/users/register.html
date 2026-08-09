@@ -1,22 +1,235 @@
 {% extends "itreporting/base.html" %}
 {% load crispy_forms_tags %}
+
 {% block title %}Register | Ardent Horizon University{% endblock %}
+
 {% block content %}
-<div class="content-section">
-    <form method="POST">
-        {% csrf_token %}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Student Registration Form</legend>
-            {{ form | crispy }}
-        </fieldset>
-        <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Register</button>
-        </div>
-    </form>
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            Already Registered? <a class="ml-2" href="#">Login</a>
-        </small>
+
+<style>
+  /* ========================================
+     REGISTRATION PAGE
+  ======================================== */
+
+  .register-page {
+    padding: 3.5rem 0 4.5rem;
+  }
+
+  .register-wrapper {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  /* Heading */
+
+  .register-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .register-icon {
+    width: 54px;
+    height: 54px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef4fb;
+    color: #1565c0;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .register-header h1 {
+    color: #202938;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .register-header p {
+    color: #667085;
+    margin: 0;
+  }
+
+
+  /* Form container */
+
+  .register-card {
+    background: #ffffff;
+    border: 1px solid #e5e9ef;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    box-shadow: 0 0.4rem 1.5rem rgba(15, 23, 42, 0.05);
+  }
+
+
+  /* Crispy form fields */
+
+  .register-card label {
+    color: #344054;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  .register-card .form-control,
+  .register-card .form-select {
+    min-height: 46px;
+    border: 1px solid #d7dde5;
+    border-radius: 0.55rem;
+    padding: 0.65rem 0.8rem;
+  }
+
+  .register-card .form-control:focus,
+  .register-card .form-select:focus {
+    border-color: #1565c0;
+    box-shadow: 0 0 0 0.2rem rgba(21, 101, 192, 0.1);
+  }
+
+  .register-card .form-text {
+    color: #7b8494;
+    font-size: 0.85rem;
+  }
+
+
+  /* Error messages */
+
+  .register-card .invalid-feedback,
+  .register-card .text-danger {
+    font-size: 0.85rem;
+  }
+
+
+  /* Register button */
+
+  .register-button {
+    width: 100%;
+    border: 0;
+    border-radius: 0.55rem;
+    padding: 0.8rem 1rem;
+    background: #1565c0;
+    color: #ffffff;
+    font-weight: 600;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .register-button:hover {
+    background: #0d47a1;
+    color: #ffffff;
+  }
+
+  .register-button:active {
+    transform: translateY(1px);
+  }
+
+
+  /* Login area */
+
+  .register-login {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e8ebef;
+    color: #667085;
+  }
+
+  .register-login a {
+    color: #1565c0;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .register-login a:hover {
+    text-decoration: underline;
+  }
+
+
+  /* Mobile */
+
+  @media (max-width: 575.98px) {
+
+    .register-page {
+      padding: 2.5rem 0 3rem;
+    }
+
+    .register-card {
+      padding: 1.5rem;
+      border-radius: 0.8rem;
+    }
+
+    .register-header h1 {
+      font-size: 1.7rem;
+    }
+
+  }
+</style>
+
+
+<section class="register-page">
+
+  <div class="register-wrapper">
+
+
+    <!-- PAGE HEADING -->
+
+    <div class="register-header">
+
+      <div class="register-icon">
+        <i class="bi bi-person-plus"></i>
+      </div>
+
+      <h1>Create your account</h1>
+
+      <p>
+        Register to access your Ardent Horizon University account.
+      </p>
+
     </div>
-</div>
+
+
+    <!-- REGISTRATION FORM -->
+
+    <div class="register-card">
+
+      <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form|crispy }}
+
+
+        <div class="mt-4">
+
+          <button
+            class="register-button"
+            type="submit"
+          >
+            <i class="bi bi-person-check me-2"></i>
+            Create Account
+          </button>
+
+        </div>
+
+      </form>
+
+
+      <!-- LOGIN -->
+
+      <div class="register-login">
+
+        <span>Already have an account?</span>
+
+        <a href="{% url 'login' %}">
+          Sign in
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
 {% endblock content %}

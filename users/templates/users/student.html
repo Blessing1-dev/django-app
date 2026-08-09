@@ -1,96 +1,589 @@
 {% extends "itreporting/base.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
-{% block title %}profile | Ardent Horizon University{% endblock %}
+
+{% block title %}Student Profile | Ardent Horizon University{% endblock %}
+
 {% block content %}
 
-{% if u_form and p_form %}
-  {# Update View: show the form only #}
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <fieldset class="form-group">
-      <legend class="border-bottom mb-4">Update Profile Details</legend>
-      {{ u_form|crispy }}
-      {{ p_form|crispy }}
-    </fieldset>
-    <div class="form-group">
-      <button class="btn btn-outline-info" type="submit">Update</button>
-    </div>
-  </form>
+<style>
+  /* ========================================
+     STUDENT DASHBOARD
+  ======================================== */
 
-{% else %}
-  {# Read-only profile view with Edit button and module lists #}
-  <div class="content-section">
-    <div class="media">
-      <p><img class="rounded-circle account-img" src="{{ student.image.url }}"></p>
-      <div class="media-body">
-        <h2 class="account-heading">{{ student.user.get_full_name }}</h2>
-        <p class="text-secondary">Username: {{ student.user.username }}</p>
-        <p class="text-secondary">Email: {{ student.user.email }}</p>
-        <p class="text-secondary">Date of Birth: {{ student.date_of_birth }}</p>
-        <p class="text-secondary">Address: {{ student.address }}</p>
-        <p class="text-secondary">City/Town: {{ student.city }}</p>
-        <p class="text-secondary">Country: {{ student.country }}</p>
+  .student-dashboard {
+    padding: 2rem 0 4rem;
+    color: #202938;
+  }
+
+  .dashboard-heading {
+    margin-bottom: 2rem;
+  }
+
+  .dashboard-heading h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .dashboard-heading p {
+    color: #667085;
+    margin-bottom: 0;
+  }
+
+
+  /* ========================================
+     PROFILE
+  ======================================== */
+
+  .profile-card {
+    background: #ffffff;
+    border: 1px solid #e5e9ef;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .profile-layout {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .profile-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #eef4fb;
+    flex-shrink: 0;
+  }
+
+  .profile-info {
+    flex: 1;
+  }
+
+  .profile-info h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .profile-username {
+    color: #667085;
+    margin-bottom: 1.4rem;
+  }
+
+  .profile-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem 2rem;
+  }
+
+  .profile-detail {
+    color: #667085;
+    font-size: 0.95rem;
+  }
+
+  .profile-detail strong {
+    display: block;
+    color: #344054;
+    font-size: 0.8rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .edit-profile-btn {
+    white-space: nowrap;
+  }
+
+
+  /* ========================================
+     MODULE SECTIONS
+  ======================================== */
+
+  .module-section {
+    margin-top: 3rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-icon {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef4fb;
+    color: #1565c0;
+    border-radius: 0.65rem;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 0.1rem;
+  }
+
+  .section-header p {
+    color: #667085;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+
+
+  /* ========================================
+     MODULE CARDS
+  ======================================== */
+
+  .module-card {
+    height: 100%;
+    background: #ffffff;
+    border: 1px solid #e5e9ef;
+    border-radius: 0.8rem;
+    padding: 1.4rem;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .module-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.6rem 1.4rem rgba(0, 0, 0, 0.06);
+  }
+
+  .module-card h5 {
+    font-weight: 650;
+    color: #202938;
+    margin-bottom: 0.7rem;
+  }
+
+  .module-meta {
+    color: #667085;
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .registered-badge {
+    display: inline-block;
+    background: #ecfdf3;
+    color: #027a48;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.3rem 0.6rem;
+    border-radius: 2rem;
+    margin-bottom: 0.9rem;
+  }
+
+
+  /* ========================================
+     EMPTY STATE
+  ======================================== */
+
+  .empty-state {
+    background: #f8fafc;
+    border: 1px dashed #d8dee8;
+    border-radius: 0.8rem;
+    padding: 2rem;
+    text-align: center;
+    color: #667085;
+  }
+
+  .empty-state i {
+    display: block;
+    font-size: 1.7rem;
+    color: #98a2b3;
+    margin-bottom: 0.7rem;
+  }
+
+
+  /* ========================================
+     UPDATE PROFILE FORM
+  ======================================== */
+
+  .profile-form-wrapper {
+    max-width: 760px;
+    margin: 1rem auto 3rem;
+  }
+
+  .profile-form-card {
+    background: #ffffff;
+    border: 1px solid #e5e9ef;
+    border-radius: 1rem;
+    padding: 2rem;
+  }
+
+  .profile-form-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e9ef;
+  }
+
+  .profile-form-header h1 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .profile-form-header p {
+    color: #667085;
+    margin-bottom: 0;
+  }
+
+
+  /* ========================================
+     MOBILE
+  ======================================== */
+
+  @media (max-width: 767.98px) {
+
+    .student-dashboard {
+      padding-top: 1rem;
+    }
+
+    .dashboard-heading h1 {
+      font-size: 1.7rem;
+    }
+
+    .profile-card {
+      padding: 1.5rem;
+    }
+
+    .profile-layout {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.4rem;
+    }
+
+    .profile-image {
+      width: 95px;
+      height: 95px;
+    }
+
+    .profile-details {
+      grid-template-columns: 1fr;
+      gap: 0.7rem;
+    }
+
+    .edit-profile-btn {
+      width: 100%;
+    }
+
+    .profile-form-card {
+      padding: 1.4rem;
+    }
+
+  }
+
+</style>
+
+
+<div class="student-dashboard">
+
+  {% if u_form and p_form %}
+
+    <!-- =====================================
+         UPDATE PROFILE VIEW
+    ====================================== -->
+
+    <div class="profile-form-wrapper">
+
+      <div class="profile-form-card">
+
+        <div class="profile-form-header">
+          <h1>Update Profile</h1>
+          <p>
+            Keep your personal information up to date.
+          </p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+
+          {% csrf_token %}
+
+          {{ u_form|crispy }}
+          {{ p_form|crispy }}
+
+          <div class="d-flex gap-2 mt-4">
+
+            <button
+              class="btn btn-primary px-4"
+              type="submit"
+            >
+              <i class="bi bi-check-lg me-1"></i>
+              Save Changes
+            </button>
+
+          </div>
+
+        </form>
+
       </div>
-    </div>
-    <a href="{% url 'users:update_profile' %}" class="btn btn-outline-primary mt-3">Edit Profile</a>
-  </div>
 
-<div class="container my-5">
-  <!-- Registered Modules Section -->
-  <div class="row mb-5">
-    <div class="col-12">
-      <h2 class="mb-4 text-primary">Your Current Module Registrations</h2>
+    </div>
+
+
+  {% else %}
+
+    <!-- =====================================
+         DASHBOARD HEADER
+    ====================================== -->
+
+    <div class="dashboard-heading">
+
+      <h1>Student Dashboard</h1>
+
+      <p>
+        Manage your profile and module registrations.
+      </p>
+
+    </div>
+
+
+    <!-- =====================================
+         PROFILE
+    ====================================== -->
+
+    <section class="profile-card">
+
+      <div class="profile-layout">
+
+        <img
+          class="profile-image"
+          src="{{ student.image.url }}"
+          alt="{{ student.user.get_full_name }}"
+        >
+
+
+        <div class="profile-info">
+
+          <h2>
+            {{ student.user.get_full_name }}
+          </h2>
+
+          <div class="profile-username">
+            @{{ student.user.username }}
+          </div>
+
+
+          <div class="profile-details">
+
+            <div class="profile-detail">
+              <strong>Email</strong>
+              {{ student.user.email }}
+            </div>
+
+            <div class="profile-detail">
+              <strong>Date of Birth</strong>
+              {{ student.date_of_birth }}
+            </div>
+
+            <div class="profile-detail">
+              <strong>Address</strong>
+              {{ student.address }}
+            </div>
+
+            <div class="profile-detail">
+              <strong>City / Town</strong>
+              {{ student.city }}
+            </div>
+
+            <div class="profile-detail">
+              <strong>Country</strong>
+              {{ student.country }}
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <a
+            href="{% url 'users:update_profile' %}"
+            class="btn btn-outline-primary edit-profile-btn"
+          >
+            <i class="bi bi-pencil me-1"></i>
+            Edit Profile
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================
+         CURRENT REGISTRATIONS
+    ====================================== -->
+
+    <section class="module-section">
+
+      <div class="section-header">
+
+        <div class="section-icon">
+          <i class="bi bi-journal-check"></i>
+        </div>
+
+        <div>
+          <h2>My Modules</h2>
+          <p>
+            Modules you are currently registered for.
+          </p>
+        </div>
+
+      </div>
+
+
       {% if registrations %}
-        <div class="row row-cols-1 row-cols-md-2 g-4">
+
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+
           {% for registration in registrations %}
-            <div class="col">
-              <div class="card shadow-sm h-100 border-success">
-                <div class="card-body">
-                  <h5 class="card-title">{{ registration.module.name }}</h5>
-                  <p class="card-text">
-                    Registered on: <strong>{{ registration.registration_date }}</strong>
-                  </p>
-                  <a href="{% url 'itreporting:unregister_module' registration.module.id %}" class="btn btn-outline-danger">
-                    Unregister
-                  </a>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      {% else %}
-        <p class="text-muted">You have no current registrations.</p>
-      {% endif %}
-    </div>
-  </div>
 
-  <!-- Available Modules Section -->
-  <div class="row">
-    <div class="col-12">
-      <h2 class="mb-4 text-success">Modules Available for Registration</h2>
+            <div class="col">
+
+              <div class="module-card">
+
+                <span class="registered-badge">
+                  <i class="bi bi-check-circle me-1"></i>
+                  Registered
+                </span>
+
+                <h5>
+                  {{ registration.module.name }}
+                </h5>
+
+                <div class="module-meta">
+
+                  <i class="bi bi-calendar3 me-1"></i>
+
+                  Registered on
+                  {{ registration.registration_date }}
+
+                </div>
+
+
+                <a
+                  href="{% url 'itreporting:unregister_module' registration.module.id %}"
+                  class="btn btn-sm btn-outline-danger"
+                >
+                  Unregister
+                </a>
+
+              </div>
+
+            </div>
+
+          {% endfor %}
+
+        </div>
+
+
+      {% else %}
+
+        <div class="empty-state">
+
+          <i class="bi bi-journal"></i>
+
+          <p class="mb-0">
+            You have no current module registrations.
+          </p>
+
+        </div>
+
+      {% endif %}
+
+    </section>
+
+
+    <!-- =====================================
+         AVAILABLE MODULES
+    ====================================== -->
+
+    <section class="module-section">
+
+      <div class="section-header">
+
+        <div class="section-icon">
+          <i class="bi bi-plus-circle"></i>
+        </div>
+
+        <div>
+
+          <h2>Available Modules</h2>
+
+          <p>
+            Choose from modules currently available for registration.
+          </p>
+
+        </div>
+
+      </div>
+
+
       {% if available_modules %}
-        <div class="row row-cols-1 row-cols-md-2 g-4">
-          {% for module in available_modules %}
-            <div class="col">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <h5 class="card-title">{{ module.name }}</h5>
-                  <a href="{% url 'itreporting:register_module' module.id %}" class="btn btn-primary">
-                    Register
-                  </a>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      {% else %}
-        <p class="text-muted">No available modules to register for.</p>
-      {% endif %}
-    </div>
-  </div>
-</div>
 
-{% endif %}
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+
+          {% for module in available_modules %}
+
+            <div class="col">
+
+              <div class="module-card">
+
+                <h5>
+                  {{ module.name }}
+                </h5>
+
+                <p class="module-meta">
+                  This module is currently available for registration.
+                </p>
+
+                <a
+                  href="{% url 'itreporting:register_module' module.id %}"
+                  class="btn btn-sm btn-primary"
+                >
+                  <i class="bi bi-plus-lg me-1"></i>
+                  Register
+                </a>
+
+              </div>
+
+            </div>
+
+          {% endfor %}
+
+        </div>
+
+
+      {% else %}
+
+        <div class="empty-state">
+
+          <i class="bi bi-check2-circle"></i>
+
+          <p class="mb-0">
+            There are no additional modules available for registration.
+          </p>
+
+        </div>
+
+      {% endif %}
+
+    </section>
+
+
+  {% endif %}
+
+</div>
 
 {% endblock content %}

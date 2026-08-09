@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 #Define a class named UserRegisterForm: and Add the additional fields within the class: Email
 class UserRegisterForm(UserCreationForm):
     
-    email = forms.EmailField(label='Email address', help_text='Your SHU email address.')
+    email = forms.EmailField(label='Email address', help_text='Your AHU email address.')
     
     class Meta:
         model = User

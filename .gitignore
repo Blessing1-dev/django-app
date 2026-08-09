@@ -16,3 +16,6 @@ venv/
 .vscode/
 .DS_Store
 Thumbs.db
+
+#Django collected static output
+staticfiles/

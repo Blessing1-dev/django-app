@@ -1,28 +1,361 @@
 {% extends "itreporting/base.html" %}
-
 {% load crispy_forms_tags %}
-{% block title %}Contact us | Ardent Horizon University{% endblock %}
+
+{% block title %}Contact Us | Ardent Horizon University{% endblock %}
+
 {% block content %}
 
-<div class="content-section"> 
- 
-    <form method="POST">
-        {% csrf_token %}
-        <fieldset class="form-group">
+<style>
+  /* ========================================
+     CONTACT PAGE
+  ======================================== */
 
-            <legend class="borer-bottom mb-4"> Contact Us </legend>
+  .contact-page {
+    padding: 3.5rem 0 5rem;
+  }
+
+  /* Header */
+
+  .contact-header {
+    max-width: 700px;
+    margin-bottom: 3rem;
+  }
+
+  .contact-label {
+    color: #1565c0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.7rem;
+  }
+
+  .contact-header h1 {
+    color: #202938;
+    font-size: clamp(2.2rem, 4vw, 3.3rem);
+    font-weight: 750;
+    letter-spacing: -0.025em;
+    margin-bottom: 1rem;
+  }
+
+  .contact-header p {
+    color: #667085;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+
+  /* Main layout */
+
+  .contact-wrapper {
+    border: 1px solid #e5e9ef;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 0.5rem 1.8rem rgba(15, 23, 42, 0.05);
+  }
+
+
+  /* Information side */
+
+  .contact-info {
+    height: 100%;
+    padding: 2.5rem;
+    background: #f6f8fb;
+  }
+
+  .contact-info h2 {
+    color: #202938;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .contact-info > p {
+    color: #667085;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .contact-method {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .contact-method:last-child {
+    margin-bottom: 0;
+  }
+
+  .contact-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.65rem;
+    background: #eaf2fc;
+    color: #1565c0;
+    font-size: 1.1rem;
+  }
+
+  .contact-method h3 {
+    color: #344054;
+    font-size: 0.95rem;
+    font-weight: 650;
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-method p {
+    color: #667085;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+
+  /* Form side */
+
+  .contact-form {
+    padding: 2.5rem;
+  }
+
+  .contact-form h2 {
+    color: #202938;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-form-intro {
+    color: #667085;
+    margin-bottom: 1.75rem;
+  }
+
+  .contact-form label {
+    color: #344054;
+    font-weight: 600;
+  }
+
+  .contact-form .form-control,
+  .contact-form .form-select {
+    border-color: #d8dee8;
+    border-radius: 0.55rem;
+    padding: 0.7rem 0.85rem;
+  }
+
+  .contact-form .form-control:focus,
+  .contact-form .form-select:focus {
+    border-color: #1565c0;
+    box-shadow: 0 0 0 0.2rem rgba(21, 101, 192, 0.1);
+  }
+
+  .contact-submit {
+    background: #1565c0;
+    color: #ffffff;
+    border: 0;
+    border-radius: 0.55rem;
+    padding: 0.75rem 1.4rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+
+  .contact-submit:hover {
+    background: #0d47a1;
+    color: #ffffff;
+  }
+
+
+  /* Login note */
+
+  .contact-login {
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #e8ebef;
+    color: #667085;
+    font-size: 0.9rem;
+  }
+
+  .contact-login a {
+    color: #1565c0;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .contact-login a:hover {
+    text-decoration: underline;
+  }
+
+
+  /* Mobile */
+
+  @media (max-width: 767.98px) {
+
+    .contact-page {
+      padding: 2.5rem 0 3.5rem;
+    }
+
+    .contact-header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .contact-info,
+    .contact-form {
+      padding: 1.75rem;
+    }
+
+  }
+</style>
+
+
+<div class="contact-page">
+
+  <!-- Page heading -->
+
+  <header class="contact-header">
+
+    <div class="contact-label">
+      Get in touch
+    </div>
+
+    <h1>Contact Ardent Horizon</h1>
+
+    <p>
+      Have a question or need more information?
+      Send us a message and our team will be happy to help.
+    </p>
+
+  </header>
+
+
+  <!-- Contact area -->
+
+  <div class="contact-wrapper">
+
+    <div class="row g-0">
+
+      <!-- LEFT SIDE -->
+
+      <div class="col-lg-4">
+
+        <aside class="contact-info">
+
+          <h2>We're here to help</h2>
+
+          <p>
+            Whether you have a question about studying at
+            Ardent Horizon or need general support, you can
+            contact us using the form.
+          </p>
+
+
+          <div class="contact-method">
+
+            <div class="contact-icon">
+              <i class="bi bi-mortarboard"></i>
+            </div>
+
+            <div>
+              <h3>Study Enquiries</h3>
+              <p>
+                Ask about programmes, modules and studying
+                at Ardent Horizon.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="contact-method">
+
+            <div class="contact-icon">
+              <i class="bi bi-question-circle"></i>
+            </div>
+
+            <div>
+              <h3>General Enquiries</h3>
+              <p>
+                Contact us with general questions about
+                the university.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="contact-method">
+
+            <div class="contact-icon">
+              <i class="bi bi-headset"></i>
+            </div>
+
+            <div>
+              <h3>Student Support</h3>
+              <p>
+                Registered students can contact us for
+                guidance and support.
+              </p>
+            </div>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+
+      <!-- RIGHT SIDE / EXISTING DJANGO FORM -->
+
+      <div class="col-lg-8">
+
+        <div class="contact-form">
+
+          <h2>Send us a message</h2>
+
+          <p class="contact-form-intro">
+            Complete the form below and we'll get back to you.
+          </p>
+
+
+          <form method="POST">
+
+            {% csrf_token %}
+
             {{ form|crispy }}
 
-        </fieldset>
-        <div class="form-group">
 
-            <button class="btn btn-outline-info"  type="submit">Submit</button>
-        </div> 
+            <button
+              class="contact-submit mt-2"
+              type="submit"
+            >
+              Send Message
+              <i class="bi bi-send ms-2"></i>
+            </button>
 
-    </form>
-    <div class="border-top pt-3">
-        <small class="text-muted">Already a registered member? <a class="ml-2" href="#">Login </a></small>
-        
-    </div> 
+          </form>
+
+
+          <div class="contact-login">
+
+            Already a registered member?
+
+            <a href="{% url 'login' %}">
+              Login
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 {% endblock content %}

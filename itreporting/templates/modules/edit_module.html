@@ -1,14 +1,190 @@
 {% extends 'itreporting/base.html' %}
 {% load crispy_forms_tags %}
 
+{% block title %}Edit {{ module.name }} | Ardent Horizon University{% endblock %}
+
 {% block content %}
 
-<div class="container mt-4">
-    <h2>Edit Module: {{ module.name }}</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-    </form>
+<style>
+    /* ========================================
+       EDIT MODULE
+    ======================================== */
+
+    .edit-module-page {
+        max-width: 760px;
+        margin: 2.5rem auto 4rem;
+    }
+
+    .edit-module-header {
+        margin-bottom: 1.75rem;
+    }
+
+    .edit-module-label {
+        color: #1565c0;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+    }
+
+    .edit-module-header h1 {
+        color: #202938;
+        font-size: 1.9rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .edit-module-header p {
+        color: #667085;
+        margin-bottom: 0;
+    }
+
+    .edit-module-card {
+        background: #ffffff;
+        border: 1px solid #e5e9ef;
+        border-radius: 0.9rem;
+        overflow: hidden;
+        box-shadow: 0 0.3rem 1.2rem rgba(0, 0, 0, 0.05);
+    }
+
+    .edit-module-card-header {
+        padding: 1.25rem 1.5rem;
+        background: #f8fafc;
+        border-bottom: 1px solid #e5e9ef;
+    }
+
+    .edit-module-card-header h5 {
+        color: #202938;
+        font-weight: 650;
+        margin-bottom: 0.25rem;
+    }
+
+    .edit-module-card-header p {
+        color: #667085;
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+
+    .edit-module-form {
+        padding: 1.75rem;
+    }
+
+    .edit-module-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.75rem;
+        padding-top: 1.25rem;
+        margin-top: 0.5rem;
+        border-top: 1px solid #edf0f3;
+    }
+
+    .edit-module-actions .btn {
+        padding: 0.65rem 1.2rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+    }
+
+    @media (max-width: 575.98px) {
+        .edit-module-page {
+            margin-top: 1.5rem;
+        }
+
+        .edit-module-header h1 {
+            font-size: 1.55rem;
+        }
+
+        .edit-module-form {
+            padding: 1.25rem;
+        }
+
+        .edit-module-card-header {
+            padding: 1.1rem 1.25rem;
+        }
+
+        .edit-module-actions {
+            flex-direction: column-reverse;
+        }
+
+        .edit-module-actions .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+
+<div class="edit-module-page">
+
+    <!-- Page heading -->
+    <div class="edit-module-header">
+
+        <div class="edit-module-label">
+            Module Management
+        </div>
+
+        <h1>
+            Edit {{ module.name }}
+        </h1>
+
+        <p>
+            Update the module information below and save your changes.
+        </p>
+
+    </div>
+
+
+    <!-- Form card -->
+    <div class="edit-module-card">
+
+        <div class="edit-module-card-header">
+
+            <h5>
+                <i class="bi bi-pencil-square me-2 text-primary"></i>
+                Module Details
+            </h5>
+
+            <p>
+                Review the information carefully before saving.
+            </p>
+
+        </div>
+
+
+        <form method="post" class="edit-module-form">
+
+            {% csrf_token %}
+
+            {{ form|crispy }}
+
+
+            <div class="edit-module-actions">
+
+                <!-- No Django URL needed, so no risk of NoReverseMatch -->
+                <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    onclick="window.history.back();"
+                >
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    <i class="bi bi-check-lg me-1"></i>
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
+
 {% endblock %}

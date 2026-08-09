@@ -1,78 +1,569 @@
 {% extends 'itreporting/base.html' %}
-{% block title %}{{ module.name }}{% endblock %}
+
+{% block title %}{{ module.name }} | Ardent Horizon University{% endblock %}
 
 {% block content %}
-<div class="mb-4">
-  <a href="{% url 'itreporting:module_list' %}{% if request.GET.course %}?course={{ request.GET.course }}{% endif %}" class="text-primary text-decoration-none d-flex align-items-center">
-    <svg class="bi bi-arrow-left-short me-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
-      <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5A.5.5 0 0 1 12 8z"/>
-    </svg>
+
+<style>
+  /* ========================================
+     MODULE DETAIL
+  ======================================== */
+
+  .module-detail-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 0 3rem;
+  }
+
+  /* Back link */
+
+  .module-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #667085;
+    font-weight: 500;
+    text-decoration: none;
+    margin-bottom: 2rem;
+    transition: color 0.2s ease;
+  }
+
+  .module-back-link:hover {
+    color: #1565c0;
+  }
+
+  /* Header */
+
+  .module-header {
+    border-bottom: 1px solid #e7ebf0;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .module-label {
+    color: #1565c0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.65rem;
+  }
+
+  .module-title {
+    color: #1d2939;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin-bottom: 0;
+  }
+
+  .availability-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .availability-open {
+    background: #ecfdf3;
+    color: #027a48;
+  }
+
+  .availability-closed {
+    background: #fef3f2;
+    color: #b42318;
+  }
+
+  /* Main information area */
+
+  .module-section {
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    color: #1d2939;
+    font-size: 1.15rem;
+    font-weight: 650;
+    margin-bottom: 1rem;
+  }
+
+  .module-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .module-info-item {
+    background: #f8fafc;
+    border: 1px solid #eaecf0;
+    border-radius: 0.7rem;
+    padding: 1rem;
+  }
+
+  .module-info-label {
+    color: #667085;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .module-info-value {
+    color: #1d2939;
+    font-weight: 600;
+  }
+
+  /* Courses */
+
+  .course-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .course-badge {
+    display: inline-block;
+    background: #eef4fb;
+    color: #1557a0;
+    padding: 0.4rem 0.7rem;
+    border-radius: 0.45rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  /* Description */
+
+  .module-description {
+    color: #475467;
+    line-height: 1.75;
+    margin-bottom: 0;
+  }
+
+  /* Registration */
+
+  .registration-panel {
+    background: #f8fafc;
+    border: 1px solid #e4e9ef;
+    border-radius: 0.9rem;
+    padding: 1.5rem;
+  }
+
+  .registration-panel h2 {
+    color: #1d2939;
+    font-size: 1.2rem;
+    font-weight: 650;
+    margin-bottom: 0.75rem;
+  }
+
+  .registration-intro {
+    color: #667085;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .registration-status {
+    border-radius: 0.65rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.92rem;
+  }
+
+  .registration-success {
+    background: #ecfdf3;
+    border: 1px solid #abefc6;
+    color: #067647;
+  }
+
+  .registration-warning {
+    background: #fffaeb;
+    border: 1px solid #fedf89;
+    color: #93370d;
+  }
+
+  .registration-closed {
+    background: #fef3f2;
+    border: 1px solid #fecdca;
+    color: #b42318;
+  }
+
+  .registration-login {
+    background: #f0f6ff;
+    border: 1px solid #cfe1f7;
+    color: #344054;
+  }
+
+  .registration-login a {
+    color: #1565c0;
+    font-weight: 600;
+  }
+
+  /* Buttons */
+
+  .register-button {
+    width: 100%;
+    border: 0;
+    border-radius: 0.55rem;
+    background: #1565c0;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .register-button:hover {
+    background: #0d47a1;
+  }
+
+  .cancel-button {
+    width: 100%;
+    border: 1px solid #f04438;
+    border-radius: 0.55rem;
+    background: #ffffff;
+    color: #b42318;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .cancel-button:hover {
+    background: #b42318;
+    color: #ffffff;
+  }
+
+  /* Mobile */
+
+  @media (max-width: 767.98px) {
+
+    .module-detail-page {
+      padding-top: 0.75rem;
+    }
+
+    .module-header {
+      padding-bottom: 1.5rem;
+    }
+
+    .module-header-row {
+      align-items: flex-start !important;
+    }
+
+    .module-info-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .registration-panel {
+      margin-top: 1rem;
+    }
+  }
+</style>
+
+
+<div class="module-detail-page">
+
+  <!-- Back to modules -->
+  <a
+    href="{% url 'itreporting:module_list' %}{% if request.GET.course %}?course={{ request.GET.course }}{% endif %}"
+    class="module-back-link"
+  >
+    <i class="bi bi-arrow-left"></i>
     Back to Modules
   </a>
-</div>
 
-<div class="card shadow-sm">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <h1 class="h4 mb-0">{{ module.name }}</h1>
-    {% if module.availability == 'open' %}
-      <span class="badge bg-success text-uppercase">{{ module.availability }}</span>
-    {% else %}
-      <span class="badge bg-danger text-uppercase">{{ module.availability }}</span>
-    {% endif %}
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-6">
-        <h5>Module Details</h5>
-        <ul class="list-unstyled">
-          <li><strong>Credits:</strong> {{ module.credit }}</li>
-          <li><strong>Category:</strong> {{ module.category }}</li>
-          <li>
-            <strong>Available for:</strong>
-            {% for course in module.allowed_courses.all %}
-              <span class="badge bg-secondary me-1">{{ course.code }}</span>
-            {% endfor %}
-          </li>
-        </ul>
-        <h5>Description</h5>
-        <p>{{ module.description }}</p>
+
+  <!-- Module header -->
+  <header class="module-header">
+
+    <div class="d-flex justify-content-between gap-3 module-header-row">
+
+      <div>
+        <div class="module-label">Module</div>
+
+        <h1 class="module-title">
+          {{ module.name }}
+        </h1>
       </div>
-      <div class="col-md-6">
-        <h5>Registration</h5>
-        {% if user.is_authenticated %}
-          {% if module.availability == 'open' %}
-            {% if is_registered %}
-              <div class="alert alert-success">
-                You are registered for this module.<br>
-                Registration Date: {{ registration.registration_date }}
-              </div>
-              <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="unregister">
-                <button type="submit" class="btn btn-danger w-100">Cancel Registration</button>
-              </form>
-            {% else %}
-              {% if can_register %}
-                <p>This module is currently open for registration.</p>
-                <form method="post">
-                  {% csrf_token %}
-                  <input type="hidden" name="action" value="register">
-                  <button type="submit" class="btn btn-primary w-100">Register for this Module</button>
-                </form>
-              {% else %}
-                <div class="alert alert-warning">
-                  Your course {% if student.course %}({{ student.course.code }}){% endif %} is not eligible for this module.
-                </div>
-              {% endif %}
-            {% endif %}
-          {% else %}
-            <div class="alert alert-danger">This module is currently closed for registration.</div>
-          {% endif %}
+
+
+      <div>
+        {% if module.availability == 'open' %}
+
+          <span class="availability-badge availability-open">
+            <i class="bi bi-check-circle"></i>
+            {{ module.availability|title }}
+          </span>
+
         {% else %}
-          <p>You need to <a href="{% url 'login' %}?next={{ request.path }}">log in</a> to register for this module.</p>
+
+          <span class="availability-badge availability-closed">
+            <i class="bi bi-x-circle"></i>
+            {{ module.availability|title }}
+          </span>
+
         {% endif %}
       </div>
+
     </div>
+
+  </header>
+
+
+  <!-- Main content -->
+  <div class="row g-4">
+
+    <!-- LEFT: Module information -->
+    <div class="col-lg-7">
+
+      <section class="module-section">
+
+        <h2 class="section-title">
+          Module Details
+        </h2>
+
+        <div class="module-info-grid">
+
+          <div class="module-info-item">
+            <div class="module-info-label">
+              Credits
+            </div>
+
+            <div class="module-info-value">
+              {{ module.credit }}
+            </div>
+          </div>
+
+
+          <div class="module-info-item">
+            <div class="module-info-label">
+              Category
+            </div>
+
+            <div class="module-info-value">
+              {{ module.category }}
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Available courses -->
+      <section class="module-section">
+
+        <h2 class="section-title">
+          Available for
+        </h2>
+
+        <div class="course-badges">
+
+          {% for course in module.allowed_courses.all %}
+
+            <span class="course-badge">
+              {{ course.code }}
+            </span>
+
+          {% empty %}
+
+            <span class="text-muted">
+              No courses have been specified for this module.
+            </span>
+
+          {% endfor %}
+
+        </div>
+
+      </section>
+
+
+      <!-- Description -->
+      <section class="module-section">
+
+        <h2 class="section-title">
+          About this Module
+        </h2>
+
+        <p class="module-description">
+          {{ module.description }}
+        </p>
+
+      </section>
+
+    </div>
+
+
+    <!-- RIGHT: Registration -->
+    <div class="col-lg-5">
+
+      <aside class="registration-panel">
+
+        <h2>
+          Module Registration
+        </h2>
+
+
+        {% if user.is_authenticated %}
+
+          {% if module.availability == 'open' %}
+
+
+            {% if is_registered %}
+
+              <!-- Already registered -->
+
+              <div class="registration-status registration-success">
+
+                <div class="fw-semibold mb-1">
+                  <i class="bi bi-check-circle-fill me-1"></i>
+                  Registration confirmed
+                </div>
+
+                <div>
+                  You are currently registered for this module.
+                </div>
+
+                {% if registration.registration_date %}
+                  <div class="mt-2 small">
+                    Registered on:
+                    <strong>
+                      {{ registration.registration_date }}
+                    </strong>
+                  </div>
+                {% endif %}
+
+              </div>
+
+
+              <form method="post">
+                {% csrf_token %}
+
+                <input
+                  type="hidden"
+                  name="action"
+                  value="unregister"
+                >
+
+                <button
+                  type="submit"
+                  class="cancel-button"
+                >
+                  Cancel Registration
+                </button>
+              </form>
+
+
+            {% else %}
+
+
+              {% if can_register %}
+
+                <!-- Can register -->
+
+                <p class="registration-intro">
+                  This module is currently open and you are
+                  eligible to register.
+                </p>
+
+
+                <form method="post">
+                  {% csrf_token %}
+
+                  <input
+                    type="hidden"
+                    name="action"
+                    value="register"
+                  >
+
+                  <button
+                    type="submit"
+                    class="register-button"
+                  >
+                    Register for this Module
+                  </button>
+                </form>
+
+
+              {% else %}
+
+                <!-- Not eligible -->
+
+                <div class="registration-status registration-warning">
+
+                  <div class="fw-semibold mb-1">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    Not eligible
+                  </div>
+
+                  <div>
+                    Your course
+
+                    {% if student.course %}
+                      ({{ student.course.code }})
+                    {% endif %}
+
+                    is not eligible for this module.
+                  </div>
+
+                </div>
+
+              {% endif %}
+
+
+            {% endif %}
+
+
+          {% else %}
+
+            <!-- Module closed -->
+
+            <div class="registration-status registration-closed">
+
+              <div class="fw-semibold mb-1">
+                <i class="bi bi-lock me-1"></i>
+                Registration closed
+              </div>
+
+              <div>
+                This module is currently closed for registration.
+              </div>
+
+            </div>
+
+          {% endif %}
+
+
+        {% else %}
+
+          <!-- Not logged in -->
+
+          <div class="registration-status registration-login">
+
+            <div class="fw-semibold mb-2">
+              <i class="bi bi-person me-1"></i>
+              Login required
+            </div>
+
+            <div>
+              You need to
+              <a href="{% url 'login' %}?next={{ request.path }}">
+                log in
+              </a>
+              to register for this module.
+            </div>
+
+          </div>
+
+        {% endif %}
+
+      </aside>
+
+    </div>
+
   </div>
+
 </div>
+
 {% endblock %}

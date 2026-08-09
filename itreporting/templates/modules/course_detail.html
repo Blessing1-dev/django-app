@@ -1,17 +1,244 @@
 {% extends 'itreporting/base.html' %}
+
 {% block title %}{{ course.name }} | Course Info{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
-    <h2>{{ course.name }} ({{ course.code }})</h2>
-    <p>{{ course.description }}</p>
-    <hr>
-    <h3>Modules for this course:</h3>
-    <ul>
-        {% for module in modules %}
-            <li><a href="{% url 'itreporting:module_detail' module.pk %}">{{ module.name }} ({{ module.code }})</a></li>
-        {% empty %}
-            <li>No modules for this course yet.</li>
-        {% endfor %}
-    </ul>
+
+<style>
+    /* ==============================
+       COURSE DETAIL
+    ============================== */
+
+    .course-detail-page {
+        max-width: 950px;
+        margin: 0 auto;
+        padding: 2rem 0 4rem;
+    }
+
+    /* Course heading */
+
+    .course-header {
+        padding-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        border-bottom: 1px solid #e5e9ef;
+    }
+
+    .course-label {
+        display: inline-block;
+        color: #1565c0;
+        background: #eef5ff;
+        padding: 0.4rem 0.75rem;
+        border-radius: 50rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        margin-bottom: 1rem;
+    }
+
+    .course-title {
+        color: #202938;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .course-description {
+        max-width: 760px;
+        color: #667085;
+        font-size: 1.05rem;
+        line-height: 1.75;
+        margin-bottom: 0;
+    }
+
+
+    /* Module section */
+
+    .modules-heading {
+        color: #202938;
+        font-weight: 650;
+        margin-bottom: 0.4rem;
+    }
+
+    .modules-intro {
+        color: #667085;
+        margin-bottom: 1.5rem;
+    }
+
+    .module-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .module-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+
+        padding: 1.1rem 1.25rem;
+
+        background: #ffffff;
+        border: 1px solid #e5e9ef;
+        border-radius: 0.75rem;
+
+        color: #202938;
+        text-decoration: none;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .module-item:hover {
+        color: #202938;
+        border-color: #b8cbea;
+        box-shadow: 0 0.4rem 1.2rem rgba(15, 23, 42, 0.06);
+        transform: translateY(-2px);
+    }
+
+    .module-info {
+        min-width: 0;
+    }
+
+    .module-name {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+    }
+
+    .module-code {
+        color: #667085;
+        font-size: 0.9rem;
+    }
+
+    .module-arrow {
+        color: #1565c0;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+
+    /* Empty state */
+
+    .no-modules {
+        padding: 2rem;
+        text-align: center;
+        background: #f7f8fa;
+        border: 1px solid #e5e9ef;
+        border-radius: 0.75rem;
+        color: #667085;
+    }
+
+    .no-modules i {
+        display: block;
+        color: #98a2b3;
+        font-size: 1.7rem;
+        margin-bottom: 0.75rem;
+    }
+
+
+    /* Mobile */
+
+    @media (max-width: 767.98px) {
+
+        .course-detail-page {
+            padding: 1.5rem 0 3rem;
+        }
+
+        .course-header {
+            margin-bottom: 2rem;
+        }
+
+        .course-title {
+            font-size: 1.8rem;
+        }
+
+        .course-description {
+            font-size: 1rem;
+        }
+
+        .module-item {
+            padding: 1rem;
+        }
+    }
+
+</style>
+
+
+<div class="course-detail-page">
+
+    <!-- Course information -->
+    <section class="course-header">
+
+        <div class="course-label">
+            {{ course.code }}
+        </div>
+
+        <h1 class="course-title">
+            {{ course.name }}
+        </h1>
+
+        <p class="course-description">
+            {{ course.description }}
+        </p>
+
+    </section>
+
+
+    <!-- Modules -->
+    <section>
+
+        <h2 class="modules-heading">
+            Course Modules
+        </h2>
+
+        <p class="modules-intro">
+            Explore the modules available for this course.
+        </p>
+
+
+        <div class="module-list">
+
+            {% for module in modules %}
+
+                <a
+                    href="{% url 'itreporting:module_detail' module.pk %}"
+                    class="module-item"
+                >
+
+                    <div class="module-info">
+
+                        <span class="module-name">
+                            {{ module.name }}
+                        </span>
+
+                        <span class="module-code">
+                            {{ module.code }}
+                        </span>
+
+                    </div>
+
+                    <i class="bi bi-arrow-right module-arrow"></i>
+
+                </a>
+
+            {% empty %}
+
+                <div class="no-modules">
+
+                    <i class="bi bi-journal"></i>
+
+                    No modules are currently available for this course.
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
 </div>
+
 {% endblock %}
