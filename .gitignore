@@ -19,3 +19,6 @@ Thumbs.db
 
 #Django collected static output
 staticfiles/
+
+#Database
+db.sqlite3
